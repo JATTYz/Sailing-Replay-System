@@ -20,7 +20,7 @@ const loader = new GLTFLoader();
         scene.add( gltf.scene )
         gltf.scene.scale.set(2, 2, 2);
         gltf.scene.position.set(-17.3285, 1, -29.7828);
-        gltf.scene.rotation.y = 0;
+        gltf.scene.rotation.y = -1.5;
 
         this.boat = gltf.scene
         this.speed = {
