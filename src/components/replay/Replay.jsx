@@ -6,7 +6,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Water } from "three/addons/objects/Water.js";
 import { Sky } from "three/addons/objects/Sky.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-
+import data from '../../data/direction.json'
 import waternormals from "../../../public/assets/waternormals.jpg";
 
 let camera, scene, renderer;
@@ -178,8 +178,29 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
 
     // Position the cube at the north direction
     northIndicator.position.set(0, 50, indicatorDistance);
-
     scene.add(northIndicator);
+
+
+    // load data and create map
+    const points = [];
+    for (const item of data) {
+        const xPosition = item["X_Position"];
+        const yPosition = item["Y_Position"];
+        points.push(new THREE.Vector3(xPosition, 1, yPosition))
+    }
+    const geometry = new THREE.BufferGeometry().setFromPoints( points );
+    const material = new THREE.LineBasicMaterial( {
+      color: 0x0000ff,
+      linewidth: 1,
+      linecap: 'round', //ignored by WebGLRenderer
+      linejoin:  'round' //ignored by WebGLRenderer
+    } );
+    const line = new THREE.Line(
+        geometry,
+        material
+    );
+    scene.add(line);
+
     // Start the animation loop
     animate();
   }
