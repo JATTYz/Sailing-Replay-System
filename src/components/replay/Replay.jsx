@@ -11,44 +11,31 @@ import waternormals from "../../../public/assets/waternormals.jpg";
 import timeAndXYData from "../../data/timeAndXY.json";
 
 let camera, scene, renderer;
-let controls, water, sun, boat, northIndicator;
+let controls, water, sun, northIndicator;
 let timeIntervals = [];
 let tempCube;
 
 const loader = new GLTFLoader();
 
-class Boat extends THREE.Group {
-  constructor(x, y) {
-    super();
-    loader.load("../public/assets/boat/scene.gltf", (gltf) => {
+class Boat {
+  loadingPromise = new Promise((resolve, reject) => {
+    loader.load("assets/boat/scene.gltf", (gltf) => {
       scene.add(gltf.scene);
       gltf.scene.scale.set(2, 2, 2);
-      gltf.scene.position.set(x, 1, y);
+      gltf.scene.position.set(-17.3285, 1, -29.7828);
       gltf.scene.rotation.y = -1.5;
-
       this.boat = gltf.scene;
-      this.speed = {
-        vel: 0,
-        rot: 0,
-      };
-    });
-  }
+      resolve(this.boat); // Resolve the promise when the object is loaded
+    }, undefined, reject);
+  });
 
-  stop() {
-    this.speed.vel = 0;
-    this.speed.rot = 0;
-  }
-
-  update() {
-    if (this.boat) {
-      this.boat.rotation.y += this.speed.rot;
-      this.boat.translateX(this.speed.vel);
-
-      //print position x,y,z
-      // console.log(this.boat.position);
-    }
+  getObject() {
+    return this.loadingPromise;
   }
 }
+
+ 
+const boat = new Boat()
 
 const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
   useEffect(() => {
@@ -61,7 +48,7 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
   function init() {
     //Temporary cube
 
-    boat = new Boat(timeAndXYData[1].X_Position, timeAndXYData[1].Y_Position);
+    // boat = new Boat(timeAndXYData[1].X_Position, timeAndXYData[1].Y_Position);
     // Create the WebGL renderer
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(window.devicePixelRatio);
@@ -227,8 +214,6 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
   function animate() {
     requestAnimationFrame(animate);
     render();
-    boat.update();
-    // stats.update();
     controls.update();
   }
 
@@ -262,20 +247,10 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
     if (timeIndex < timeIntervals.length) {
       const data = timeAndXYData;
       const currentPosition = data[timeIndex];
-      // boat.boat.position.x = currentPosition.X_Position;
-      // boat.boat.position.z = currentPosition.Y_Position;
 
-      console.log("Interval", currentInterval);
-      // boat.position.set(
-      //   currentPosition.X_Position,
-      //   1,
-      //   currentPosition.Y_Position
-      // );
-      tempCube.position.set(
-        currentPosition.X_Position,
-        1,
-        currentPosition.Y_Position
-      );
+      boat.getObject().then((loadedObject) => {
+        loadedObject.position.set(currentPosition.X_Position,1,currentPosition.Y_Position)
+      });
 
       setTimeout(moveBoat, currentInterval);
     }
