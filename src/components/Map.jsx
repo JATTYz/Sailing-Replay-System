@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from 'react'
-import Plot from 'react-plotly.js';
+import React, { useEffect, useState } from "react";
+import Plot from "react-plotly.js";
 import timeAndXYData from "../data/timeAndXY.json";
-
 
 const Map = () => {
   const [X_AXIS, setX_AXIS] = useState([]);
   const [Y_AXIS, setY_AXIS] = useState([]);
   const [timeIntervals, setTimeIntervals] = useState([]);
 
-
   useEffect(() => {
     // Access and use the ref in the child component
-    calculateIntervals()
-    moveBoat()
+    calculateIntervals();
+    moveBoat();
   }, []);
 
   // const X_AXIS = [];
@@ -49,32 +47,21 @@ const Map = () => {
     }
   }
 
-
-
   return (
-   <Plot
+    <Plot
+      data={[
+        {
+          x: X_AXIS,
 
-        data={[
+          y: Y_AXIS,
 
-          {
+          type: "scatter",
 
-            x: X_AXIS,
+          marker: { color: "green" },
+        },
+      ]}
+    />
+  );
+};
 
-            y: Y_AXIS,
-
-            type: 'scatter',
-
-           
-
-            marker: {color: 'green'},
-
-          }
-        ]}
-
-        layout={ {width: 400, height: 400, title: 'MAP'} }
-
-      />
-  )
-}
-
-export default Map
+export default Map;

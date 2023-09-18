@@ -19,14 +19,19 @@ const loader = new GLTFLoader();
 
 class Boat {
   loadingPromise = new Promise((resolve, reject) => {
-    loader.load("assets/boat/scene.gltf", (gltf) => {
-      scene.add(gltf.scene);
-      gltf.scene.scale.set(2, 2, 2);
-      gltf.scene.position.set(-17.3285, 1, -29.7828);
-      gltf.scene.rotation.y = -1.5;
-      this.boat = gltf.scene;
-      resolve(this.boat); // Resolve the promise when the object is loaded
-    }, undefined, reject);
+    loader.load(
+      "assets/boat/scene.gltf",
+      (gltf) => {
+        scene.add(gltf.scene);
+        gltf.scene.scale.set(2, 2, 2);
+        gltf.scene.position.set(-17.3285, 1, -29.7828);
+        gltf.scene.rotation.y = -1.5;
+        this.boat = gltf.scene;
+        resolve(this.boat); // Resolve the promise when the object is loaded
+      },
+      undefined,
+      reject
+    );
   });
 
   getObject() {
@@ -34,8 +39,7 @@ class Boat {
   }
 }
 
- 
-const boat = new Boat()
+const boat = new Boat();
 
 const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
   useEffect(() => {
@@ -207,7 +211,8 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
   function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    const renderContainer = document.getElementById("render");
+    renderer.setSize(renderContainer.offsetWidth, renderContainer.offsetHeight);
   }
 
   // Animation loop
@@ -249,7 +254,11 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
       const currentPosition = data[timeIndex];
 
       boat.getObject().then((loadedObject) => {
-        loadedObject.position.set(currentPosition.X_Position,1,currentPosition.Y_Position)
+        loadedObject.position.set(
+          currentPosition.X_Position,
+          1,
+          currentPosition.Y_Position
+        );
       });
 
       setTimeout(moveBoat, currentInterval);

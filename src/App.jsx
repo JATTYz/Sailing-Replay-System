@@ -21,11 +21,10 @@ const App = () => {
           />
         </div>
         <div id="map" ref={mapRef}>
-          MAP
+          <Map />
         </div>
       </div>
       <div className="lower_half"></div>
-      <Map />
     </div>
   );
 };
