@@ -5,7 +5,7 @@ import timeAndXYData from "../data/timeAndXY.json";
 const Map = () => {
   const [X_AXIS, setX_AXIS] = useState([]);
   const [Y_AXIS, setY_AXIS] = useState([]);
-  const [timeIntervals, setTimeIntervals] = useState([]);
+  const timeIntervals = [];
 
   useEffect(() => {
     // Access and use the ref in the child component
@@ -13,9 +13,6 @@ const Map = () => {
     moveBoat();
   }, []);
 
-  // const X_AXIS = [];
-  // const Y_AXIS = [];
-  // const timeIntervals = [];
   // Calculate the time in Milliseconds between each time record point
   function calculateIntervals() {
     const data = timeAndXYData;
@@ -46,6 +43,7 @@ const Map = () => {
       setTimeout(moveBoat, currentInterval);
     }
   }
+
 
   return (
     <Plot

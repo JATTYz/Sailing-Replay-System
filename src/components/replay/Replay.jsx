@@ -6,7 +6,6 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Water } from "three/addons/objects/Water.js";
 import { Sky } from "three/addons/objects/Sky.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import data from "../../data/direction.json";
 import waternormals from "../../../public/assets/waternormals.jpg";
 import timeAndXYData from "../../data/timeAndXY.json";
 
@@ -24,7 +23,7 @@ class Boat {
       (gltf) => {
         scene.add(gltf.scene);
         gltf.scene.scale.set(2, 2, 2);
-        gltf.scene.position.set(-17.3285, 1, -29.7828);
+        gltf.scene.position.set(17.3285, 1, -29.7828);
         gltf.scene.rotation.y = -1.5;
         this.boat = gltf.scene;
         resolve(this.boat); // Resolve the promise when the object is loaded
@@ -186,11 +185,18 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
 
     // ====== load data and create map ======
     const points = [];
-    for (const item of data) {
-      const xPosition = item["X_Position"];
-      const yPosition = item["Y_Position"];
-      points.push(new THREE.Vector3(xPosition, 1, yPosition));
+    
+    for(let i = 1; i < timeAndXYData.length; i++){
+      const data = timeAndXYData;
+      const currentPosition = data[i];
+
+      if (currentPosition["X_Position"] && currentPosition["Y_Position"] !== null) {
+        const xPosition = currentPosition["X_Position"];
+        const yPosition = currentPosition["Y_Position"];
+        points.push(new THREE.Vector3(-xPosition, 1, yPosition));
+      }
     }
+   
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
     const material = new THREE.LineBasicMaterial({
       color: 0x0000ff,
@@ -255,7 +261,7 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
 
       boat.getObject().then((loadedObject) => {
         loadedObject.position.set(
-          currentPosition.X_Position,
+          -currentPosition.X_Position,
           1,
           currentPosition.Y_Position
         );
