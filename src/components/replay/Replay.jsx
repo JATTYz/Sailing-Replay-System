@@ -65,9 +65,39 @@ class Flag {
   }
 }
 
+class Bouy {
+  constructor(x, y) {
+    this.x = x; // Store x, y, and z as instance variables
+    this.y = y;
+  
+    this.loadingPromise = new Promise((resolve, reject) => {
+      loader.load(
+        "assets/bouy/scene.gltf",
+        (gltf) => {
+          scene.add(gltf.scene);
+          gltf.scene.scale.set(2, 2, 2); 
+          gltf.scene.position.set(this.x, 0, this.y);
+          gltf.scene.rotation.y = -1.5;
+          this.boat = gltf.scene;
+          resolve(this.boat); 
+        },
+        undefined,
+        reject
+      );
+    });
+  }
+
+  getObject() {
+    return this.loadingPromise;
+  }
+}
+
 const boat = new Boat();
 const flag1 = new Flag(3,10);
 const flag2 = new Flag(3,40);
+const mark1 = new Bouy(-50,25);
+const mark2 = new Bouy(0,-25);
+const mark3 = new Bouy(50,25);
 
 const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
   useEffect(() => {
@@ -257,7 +287,7 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
     // Start the animation loop
     animate();
     calculateIntervals();
-    // moveBoat();
+    moveBoat();
   }
 
   // Function to handle window resize
