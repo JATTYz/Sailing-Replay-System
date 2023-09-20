@@ -66,8 +66,8 @@ class Flag {
 }
 
 const boat = new Boat();
-const flag1 = new Flag(0,10);
-const flag2 = new Flag(0,40);
+const flag1 = new Flag(3,10);
+const flag2 = new Flag(3,40);
 
 const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
   useEffect(() => {
@@ -235,6 +235,24 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
     });
     const line = new THREE.Line(geometry, material);
     scene.add(line);
+
+
+    const startingLine = [];
+    
+    for(let i = 10; i <= 40; i++){
+      startingLine.push(new THREE.Vector3(0,0,i))
+      startingLine.push(new THREE.Vector3(0,10,i))
+    }
+
+    const startingLinegeo = new THREE.BufferGeometry().setFromPoints(startingLine);
+   
+    const startingLinematerial = new THREE.LineBasicMaterial({
+      color: 0xAAFF00,
+      linewidth: 3,
+    });
+
+    const startline = new THREE.Line(startingLinegeo, startingLinematerial);
+    scene.add(startline);
 
     // Start the animation loop
     animate();
