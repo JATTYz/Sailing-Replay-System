@@ -9,8 +9,8 @@ const Map = () => {
 
   useEffect(() => {
     // Access and use the ref in the child component
-    calculateIntervals();
-    moveBoat();
+    // calculateIntervals();
+    // moveBoat();
   }, []);
 
   // Calculate the time in Milliseconds between each time record point

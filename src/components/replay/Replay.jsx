@@ -38,7 +38,36 @@ class Boat {
   }
 }
 
+class Flag {
+  constructor(x, y) {
+    this.x = x; // Store x, y, and z as instance variables
+    this.y = y;
+  
+    this.loadingPromise = new Promise((resolve, reject) => {
+      loader.load(
+        "assets/flag/scene.gltf",
+        (gltf) => {
+          scene.add(gltf.scene);
+          gltf.scene.scale.set(1, 1, 1); 
+          gltf.scene.position.set(this.x, 1, this.y);
+          gltf.scene.rotation.y = -1.5;
+          this.boat = gltf.scene;
+          resolve(this.boat); 
+        },
+        undefined,
+        reject
+      );
+    });
+  }
+
+  getObject() {
+    return this.loadingPromise;
+  }
+}
+
 const boat = new Boat();
+const flag1 = new Flag(0,10);
+const flag2 = new Flag(0,40);
 
 const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
   useEffect(() => {
@@ -210,7 +239,7 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
     // Start the animation loop
     animate();
     calculateIntervals();
-    moveBoat();
+    // moveBoat();
   }
 
   // Function to handle window resize
@@ -227,7 +256,7 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
     render();
     controls.update();
   }
-
+  
   // Render function
   function render() {
     const time = performance.now() * 0.001;
