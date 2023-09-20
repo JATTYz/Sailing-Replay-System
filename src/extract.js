@@ -39,13 +39,14 @@ readFile("Testsail.sbp", "utf8", (err, data) => {
     };
   });
 
-  const headingData = lines.map((line) => {
+  const timeAndXYData = lines.map((line) => {
     const values = line.split("\t").map(parseFloat);
     return {
-      heading: values[15],
+      time: values[0] / 60.0,
+      X_Position: values[1],
+      Y_Position: values[2],
     };
   });
-  console.log(headingData.slice(0, 20));
 
   // Write data to separate JSON files
   writeFile(
@@ -97,6 +98,19 @@ readFile("Testsail.sbp", "utf8", (err, data) => {
         return;
       }
       console.log("hikingEffectData has been written to hikingEffectData.json");
+    }
+  );
+
+  writeFile(
+    "data/timeAndXY.json",
+    JSON.stringify(timeAndXYData, null, 2),
+    "utf8",
+    (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+      console.log("timeAndXYData has been written to timeAndXY.json");
     }
   );
 });

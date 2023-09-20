@@ -2,6 +2,7 @@
 import React, { useRef } from "react";
 import Replay from "./components/replay/Replay";
 import "../src/main.css";
+import Map from "./components/Map";
 
 const App = () => {
   const canvasRef = useRef(null);
@@ -20,7 +21,7 @@ const App = () => {
           />
         </div>
         <div id="map" ref={mapRef}>
-          MAP
+          <Map />
         </div>
       </div>
       <div className="lower_half"></div>
