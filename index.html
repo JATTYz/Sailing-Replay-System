@@ -1,43 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sail Replay</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <script src="script.js"></script>
-</head>
-<body>
-    <div class="row">
-        <div id="boat">
-            <img src="boat.png"/>
-        </div>
-        
-        <div id="content">
-            <br/><br/>
-            <h1>Sail Replay: Relive Your Sailing Experience</h1><br/>
-            <h3>In Collaboration with:</h3><br/>
-            <img id="logo" src="logo.png"/>
-            <br/><br/><br/><br/>
-            <hr>
-            <br/>
-            <h2>Upload CSV file to continue</h2>
-            <br/>
-
-            <div class="row">
-                <div>
-                    <input type="file" id="fileInput" style="display: none;" onchange="displayFileStatus()">
-                    <label for="fileInput" class="button">Browse...</label>
-                </div>
-                <div id="fileStatus">No file selected</div>
-            </div>
-
-            <br/><br/>
-            <button class="upload-button" onclick="" disabled>Upload</button>
-
-        </div>
-    </div>
-   
-    
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- <link rel="icon" type="image/svg+xml" href="/vite.svg" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SAILING REPLAY APP</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>
