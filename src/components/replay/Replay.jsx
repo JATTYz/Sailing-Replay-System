@@ -110,9 +110,9 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
   function init() {
     //Temporary cube
 
-    // boat = new Boat(timeAndXYData[1].X_Position, timeAndXYData[1].Y_Position);
+    
     // Create the WebGL renderer
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer = new THREE.WebGLRenderer({ antialias: true,  });
     renderer.setPixelRatio(window.devicePixelRatio);
     // renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setSize(
@@ -139,7 +139,7 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
       1,
       2000
     );
-    camera.position.set(1, 3, -100);
+    camera.position.set(10, 50, -120);
 
     // Create the sun vector
     sun = new THREE.Vector3();
@@ -209,7 +209,7 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
     controls.maxPolarAngle = Math.PI * 0.495;
     controls.target.set(0, 10, 0);
     controls.minDistance = 40.0;
-    controls.maxDistance = 200.0;
+    controls.maxDistance = 1000.0;
     controls.update();
 
     // Add event listener for window resize
@@ -287,7 +287,7 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
     // Start the animation loop
     animate();
     calculateIntervals();
-    moveBoat();
+    // moveBoat();
   }
 
   // Function to handle window resize
