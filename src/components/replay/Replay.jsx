@@ -8,6 +8,8 @@ import { Sky } from "three/addons/objects/Sky.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import waternormals from "../../../public/assets/waternormals.jpg";
 import timeAndXYData from "../../data/timeAndXY.json";
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 
 let camera, scene, renderer;
 let controls, water, sun, northIndicator;
@@ -284,10 +286,28 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
     const startline = new THREE.Line(startingLinegeo, startingLinematerial);
     scene.add(startline);
 
+    const fontLoader = new FontLoader();
+
+    fontLoader.load("fonts/helvetiker_bold.typeface.json", function( font ) {
+    
+      const textgeo = new TextGeometry("Starting Point", {
+        font: font,
+        size: 3,
+        height:2
+      })
+
+      const textMesh = new THREE.Mesh(textgeo)
+
+      textMesh.castShadow = true
+      textMesh.position.set(0,10,12)
+      textMesh.rotateY(4.75)
+      scene.add(textMesh)
+    })
+
     // Start the animation loop
     animate();
     calculateIntervals();
-    // moveBoat();
+    moveBoat();
   }
 
   // Function to handle window resize
