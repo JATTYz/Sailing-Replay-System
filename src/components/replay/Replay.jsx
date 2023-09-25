@@ -94,13 +94,35 @@ class Bouy {
   }
 }
 
+class Operahose {
+  loadingPromise = new Promise((resolve, reject) => {
+    loader.load(
+      "assets/opera-house/scene.gltf",
+      (gltf) => {
+        scene.add(gltf.scene);
+        gltf.scene.scale.set(5, 5, 5);
+        gltf.scene.position.set(151.24, 2, -33.85);
+        gltf.scene.rotation.y = -1.5;
+        this.boat = gltf.scene;
+        resolve(this.boat); // Resolve the promise when the object is loaded
+      },
+      undefined,
+      reject
+    );
+  });
+
+  getObject() {
+    return this.loadingPromise;
+  }
+}
+
 const boat = new Boat();
 const flag1 = new Flag(3,10);
 const flag2 = new Flag(3,40);
 const mark1 = new Bouy(-50,25);
 const mark2 = new Bouy(0,-25);
 const mark3 = new Bouy(50,25);
-
+const operaHouse = new Operahose();
 const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
   useEffect(() => {
     // Access and use the ref in the child component
