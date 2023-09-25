@@ -236,7 +236,7 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
     // Update the position of the sun and sky
     function updateSun() {
       const phi = THREE.MathUtils.degToRad(90 - parameters.elevation);
-      const theta = THREE.MathUtils.degToRad(parameters.azimuth);
+      const theta = THREE.MathUtils.degToRad(90);
       sun.setFromSphericalCoords(1, phi, theta);
       sky.material.uniforms["sunPosition"].value.copy(sun);
       water.material.uniforms["sunDirection"].value.copy(sun).normalize();
@@ -267,22 +267,7 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
 
     // Position the cube at the north direction
     northIndicator.position.set(0, 50, indicatorDistance);
-    scene.add(northIndicator);
-
-    // ===== Temp Cube ======
-    const tempCubeSize = 3;
-
-    const tempCubeGeometry = new THREE.BoxGeometry(
-      tempCubeSize,
-      tempCubeSize,
-      tempCubeSize * 2
-    );
-    const tempCubeMaterial = new THREE.MeshBasicMaterial({ color: 0x800080 });
-    tempCube = new THREE.Mesh(tempCubeGeometry, tempCubeMaterial);
-
-    // Position the cube at the north direction
-    tempCube.position.set(0, 50, indicatorDistance);
-    scene.add(tempCube);
+    // scene.add(northIndicator);
 
     // ====== load data and create map ======
     const points = [];
@@ -336,12 +321,38 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
         height:2
       })
 
-      const textMesh = new THREE.Mesh(textgeo)
-
+      const textMesh = new THREE.Mesh(textgeo)      
       textMesh.castShadow = true
       textMesh.position.set(0,10,12)
       textMesh.rotateY(4.75)
+
+
+      const textNorth = new TextGeometry("North", {
+        font: font,
+        size: 20,
+        height:2
+      })
+
+      const northMesh = new THREE.Mesh(textNorth)
+      northMesh.castShadow = true
+      northMesh.position.set(0,50,200)
+      northMesh.rotateY(3)
+
+      const textSouth = new TextGeometry("South", {
+        font: font,
+        size: 30,
+        height:2
+      })
+
+      const southMesh = new THREE.Mesh(textSouth)
+      southMesh.castShadow = true
+      southMesh.position.set(0,50,-300)
+      southMesh.rotateY(0)
+
+
       scene.add(textMesh)
+      scene.add(northMesh)
+      scene.add(southMesh)
     })
 
     // Start the animation loop
