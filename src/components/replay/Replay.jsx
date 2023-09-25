@@ -53,8 +53,6 @@ class Flag {
           gltf.scene.scale.set(1, 1, 1); 
           gltf.scene.position.set(this.x, 1, this.y);
           gltf.scene.rotation.y = -1.5;
-          this.boat = gltf.scene;
-          resolve(this.boat); 
         },
         undefined,
         reject
@@ -80,8 +78,6 @@ class Bouy {
           gltf.scene.scale.set(2, 2, 2); 
           gltf.scene.position.set(this.x, 0, this.y);
           gltf.scene.rotation.y = -1.5;
-          this.boat = gltf.scene;
-          resolve(this.boat); 
         },
         undefined,
         reject
@@ -103,17 +99,36 @@ class Operahose {
         gltf.scene.scale.set(5, 5, 5);
         gltf.scene.position.set(151.24, 2, -33.85);
         gltf.scene.rotation.y = -1.5;
-        this.boat = gltf.scene;
-        resolve(this.boat); // Resolve the promise when the object is loaded
       },
       undefined,
       reject
     );
   });
+}
 
-  getObject() {
-    return this.loadingPromise;
-  }
+class HarbourBridge {
+  loadingPromise = new Promise((resolve, reject) => {
+    loader.load(
+      "assets/habour-bridge/scene.gltf",
+      (gltf) => {
+        gltf.scene.traverse((child) => {
+          if (child.isMesh) {
+            const material = child.material;
+            // Modify material color here
+            const newColor = new THREE.Color(1, 0, 0); // Red
+            material.color.set(0x616060)
+          }
+        });
+        
+        gltf.scene.scale.set(300, 300, 300);
+        gltf.scene.position.set(300, 1, 150);
+        gltf.scene.rotation.y = -1.5;
+        scene.add(gltf.scene);
+      },
+      undefined,
+      reject
+    );
+  });
 }
 
 const boat = new Boat();
@@ -123,6 +138,9 @@ const mark1 = new Bouy(-50,25);
 const mark2 = new Bouy(0,-25);
 const mark3 = new Bouy(50,25);
 const operaHouse = new Operahose();
+const habourBridge = new HarbourBridge();
+
+
 const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
   useEffect(() => {
     // Access and use the ref in the child component
