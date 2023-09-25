@@ -3,6 +3,7 @@ import React, { useRef } from "react";
 import Replay from "./components/replay/Replay";
 import "../src/main.css";
 import Map from "./components/Map";
+import GraphControlPanel from "./components/replay/graphs/GraphControlPanel";
 
 const App = () => {
   const canvasRef = useRef(null);
@@ -24,7 +25,9 @@ const App = () => {
           <Map />
         </div>
       </div>
-      <div className="lower_half"></div>
+      <div className="lower_half">
+        <GraphControlPanel />
+      </div>
     </div>
   );
 };
