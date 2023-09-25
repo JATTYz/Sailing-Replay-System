@@ -8,6 +8,8 @@ import { Sky } from "three/addons/objects/Sky.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import waternormals from "../../../public/assets/waternormals.jpg";
 import timeAndXYData from "../../data/timeAndXY.json";
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 
 let camera, scene, renderer;
 let controls, water, sun, northIndicator;
@@ -38,7 +40,106 @@ class Boat {
   }
 }
 
+class Flag {
+  constructor(x, y) {
+    this.x = x; // Store x, y, and z as instance variables
+    this.y = y;
+  
+    this.loadingPromise = new Promise((resolve, reject) => {
+      loader.load(
+        "assets/flag/scene.gltf",
+        (gltf) => {
+          scene.add(gltf.scene);
+          gltf.scene.scale.set(1, 1, 1); 
+          gltf.scene.position.set(this.x, 1, this.y);
+          gltf.scene.rotation.y = -1.5;
+        },
+        undefined,
+        reject
+      );
+    });
+  }
+
+  getObject() {
+    return this.loadingPromise;
+  }
+}
+
+class Bouy {
+  constructor(x, y) {
+    this.x = x; // Store x, y, and z as instance variables
+    this.y = y;
+  
+    this.loadingPromise = new Promise((resolve, reject) => {
+      loader.load(
+        "assets/bouy/scene.gltf",
+        (gltf) => {
+          scene.add(gltf.scene);
+          gltf.scene.scale.set(2, 2, 2); 
+          gltf.scene.position.set(this.x, 0, this.y);
+          gltf.scene.rotation.y = -1.5;
+        },
+        undefined,
+        reject
+      );
+    });
+  }
+
+  getObject() {
+    return this.loadingPromise;
+  }
+}
+
+class Operahose {
+  loadingPromise = new Promise((resolve, reject) => {
+    loader.load(
+      "assets/opera-house/scene.gltf",
+      (gltf) => {
+        scene.add(gltf.scene);
+        gltf.scene.scale.set(5, 5, 5);
+        gltf.scene.position.set(151.24, 2, -33.85);
+        gltf.scene.rotation.y = -1.5;
+      },
+      undefined,
+      reject
+    );
+  });
+}
+
+class HarbourBridge {
+  loadingPromise = new Promise((resolve, reject) => {
+    loader.load(
+      "assets/habour-bridge/scene.gltf",
+      (gltf) => {
+        gltf.scene.traverse((child) => {
+          if (child.isMesh) {
+            const material = child.material;
+            // Modify material color here
+            const newColor = new THREE.Color(1, 0, 0); // Red
+            material.color.set(0x616060)
+          }
+        });
+        
+        gltf.scene.scale.set(300, 300, 300);
+        gltf.scene.position.set(300, 1, 150);
+        gltf.scene.rotation.y = -1.5;
+        scene.add(gltf.scene);
+      },
+      undefined,
+      reject
+    );
+  });
+}
+
 const boat = new Boat();
+const flag1 = new Flag(3,10);
+const flag2 = new Flag(3,40);
+const mark1 = new Bouy(-50,25);
+const mark2 = new Bouy(0,-25);
+const mark3 = new Bouy(50,25);
+const operaHouse = new Operahose();
+const habourBridge = new HarbourBridge();
+
 
 const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
   useEffect(() => {
@@ -51,9 +152,9 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
   function init() {
     //Temporary cube
 
-    // boat = new Boat(timeAndXYData[1].X_Position, timeAndXYData[1].Y_Position);
+    
     // Create the WebGL renderer
-    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer = new THREE.WebGLRenderer({ antialias: true,  });
     renderer.setPixelRatio(window.devicePixelRatio);
     // renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setSize(
@@ -80,7 +181,7 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
       1,
       2000
     );
-    camera.position.set(1, 3, -100);
+    camera.position.set(10, 50, -120);
 
     // Create the sun vector
     sun = new THREE.Vector3();
@@ -135,7 +236,7 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
     // Update the position of the sun and sky
     function updateSun() {
       const phi = THREE.MathUtils.degToRad(90 - parameters.elevation);
-      const theta = THREE.MathUtils.degToRad(parameters.azimuth);
+      const theta = THREE.MathUtils.degToRad(90);
       sun.setFromSphericalCoords(1, phi, theta);
       sky.material.uniforms["sunPosition"].value.copy(sun);
       water.material.uniforms["sunDirection"].value.copy(sun).normalize();
@@ -150,7 +251,7 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
     controls.maxPolarAngle = Math.PI * 0.495;
     controls.target.set(0, 10, 0);
     controls.minDistance = 40.0;
-    controls.maxDistance = 200.0;
+    controls.maxDistance = 1000.0;
     controls.update();
 
     // Add event listener for window resize
@@ -166,22 +267,7 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
 
     // Position the cube at the north direction
     northIndicator.position.set(0, 50, indicatorDistance);
-    scene.add(northIndicator);
-
-    // ===== Temp Cube ======
-    const tempCubeSize = 3;
-
-    const tempCubeGeometry = new THREE.BoxGeometry(
-      tempCubeSize,
-      tempCubeSize,
-      tempCubeSize * 2
-    );
-    const tempCubeMaterial = new THREE.MeshBasicMaterial({ color: 0x800080 });
-    tempCube = new THREE.Mesh(tempCubeGeometry, tempCubeMaterial);
-
-    // Position the cube at the north direction
-    tempCube.position.set(0, 50, indicatorDistance);
-    scene.add(tempCube);
+    // scene.add(northIndicator);
 
     // ====== load data and create map ======
     const points = [];
@@ -207,6 +293,68 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
     const line = new THREE.Line(geometry, material);
     scene.add(line);
 
+
+    const startingLine = [];
+    
+    for(let i = 10; i <= 40; i++){
+      startingLine.push(new THREE.Vector3(0,0,i))
+      startingLine.push(new THREE.Vector3(0,10,i))
+    }
+
+    const startingLinegeo = new THREE.BufferGeometry().setFromPoints(startingLine);
+   
+    const startingLinematerial = new THREE.LineBasicMaterial({
+      color: 0xAAFF00,
+      linewidth: 3,
+    });
+
+    const startline = new THREE.Line(startingLinegeo, startingLinematerial);
+    scene.add(startline);
+
+    const fontLoader = new FontLoader();
+
+    fontLoader.load("fonts/helvetiker_bold.typeface.json", function( font ) {
+    
+      const textgeo = new TextGeometry("Starting Point", {
+        font: font,
+        size: 3,
+        height:2
+      })
+
+      const textMesh = new THREE.Mesh(textgeo)      
+      textMesh.castShadow = true
+      textMesh.position.set(0,10,12)
+      textMesh.rotateY(4.75)
+
+
+      const textNorth = new TextGeometry("North", {
+        font: font,
+        size: 20,
+        height:2
+      })
+
+      const northMesh = new THREE.Mesh(textNorth)
+      northMesh.castShadow = true
+      northMesh.position.set(0,50,200)
+      northMesh.rotateY(3)
+
+      const textSouth = new TextGeometry("South", {
+        font: font,
+        size: 30,
+        height:2
+      })
+
+      const southMesh = new THREE.Mesh(textSouth)
+      southMesh.castShadow = true
+      southMesh.position.set(0,50,-300)
+      southMesh.rotateY(0)
+
+
+      scene.add(textMesh)
+      scene.add(northMesh)
+      scene.add(southMesh)
+    })
+
     // Start the animation loop
     animate();
     calculateIntervals();
@@ -227,7 +375,7 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
     render();
     controls.update();
   }
-
+  
   // Render function
   function render() {
     const time = performance.now() * 0.001;
