@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useReducer, useState } from 'react';
 import { useCSVReader } from 'react-papaparse';
 
 import "../../../main.css";
@@ -22,6 +22,7 @@ const GraphControlPanel = () => {
     const [windVelo, setWindVelo] = useState([]);
     const [isRunning, setIsRunning] = useState(false);
     const [frameIndex, setFrameIndex] = useState(0);
+    const [plotsDispState, togglePlotsDispState] = useReducer((_plotsDispState, plotsDispStateChange) => _plotsDispState.includes(plotsDispStateChange.type) ? _plotsDispState.filter(s => s !== plotsDispStateChange.type) : [..._plotsDispState.length === 4 ? _plotsDispState.slice(1) : _plotsDispState, plotsDispStateChange.type], ['BOOM_ANGLE', 'FWD_VELOCITY', 'HEADING', 'HEEL_ANGLE', 'HIKING_EFFORT', 'RUDDER_ANGLE', 'WIND_VELOCITY']);
 
     const { CSVReader } = useCSVReader();
 
@@ -51,7 +52,9 @@ const GraphControlPanel = () => {
                     </div>
                 }
             </CSVReader>
-            <BoomAngleGraph time={time} boomAngle={boomAngle} isRunning={isRunning} frameIndex={frameIndex} setFrameIndex={setFrameIndex} />
+            { plotsDispState.map(dispState =>
+                dispState === 'BOOM_ANGLE' && <BoomAngleGraph time={time} boomAngle={boomAngle} isRunning={isRunning} frameIndex={frameIndex} setFrameIndex={setFrameIndex} />
+            ) }
             <FwdVelocityGraph time={time} fwdVelo={fwdVelo} isRunning={isRunning} frameIndex={frameIndex} setFrameIndex={setFrameIndex} />
             <HeadingGraph time={time} heading={heading} isRunning={isRunning} frameIndex={frameIndex} setFrameIndex={setFrameIndex} />
             <HeelAngleGraph time={time} heelAngle={heelAngle} isRunning={isRunning} frameIndex={frameIndex} setFrameIndex={setFrameIndex} />
