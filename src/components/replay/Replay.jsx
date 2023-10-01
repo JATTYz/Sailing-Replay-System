@@ -15,11 +15,11 @@ import course_data from "../../data/course/Triangular_Small.json"
 let camera, scene, renderer;
 let controls, water, sun, northIndicator;
 let timeIntervals = [];
-const start_left_X = course_data["Start_left"]["X"]
-const start_left_Y = course_data["Start_left"]["Y"]
-const start_right_X = course_data["Start_right"]["X"]
-const start_right_Y = course_data["Start_right"]["Y"]
 
+const start_left_X = course_data["Start_left"]["X"];
+const start_left_Y = course_data["Start_left"]["Y"];
+const start_right_X = course_data["Start_right"]["X"];
+const start_right_Y = course_data["Start_right"]["Y"];
 
 const loader = new GLTFLoader();
 
@@ -101,7 +101,7 @@ class Operahose {
       "assets/opera-house/scene.gltf",
       (gltf) => {
         scene.add(gltf.scene);
-        gltf.scene.scale.set(5, 5, 5);
+        gltf.scene.scale.set(3, 3, 3);
         gltf.scene.position.set(151.24, 2, -33.85);
         gltf.scene.rotation.y = -1.5;
       },
@@ -140,14 +140,40 @@ const boat = new Boat();
 const flag1 = new Flag(start_left_X, start_left_Y);
 const flag2 = new Flag(start_right_X, start_right_Y);
 
-const mark1 = new Bouy(-50,25);
-const mark2 = new Bouy(0,-25);
-const mark3 = new Bouy(50,25);
+function generateBouy () {
+
+  if(course_data["Top"] != null){
+    const bouy_top_X = course_data["Top"]["X"];
+    const bouy_top_Y = course_data["Top"]["Y"];
+    new Bouy(bouy_top_X,bouy_top_Y);
+  }
+
+  if(course_data["Left"] != null) {
+    const bouy_left_X = course_data["Left"]["X"];
+    const bouy_left_Y = course_data["Left"]["Y"];
+    new Bouy(bouy_left_X, bouy_left_Y);
+  }
+
+  if(course_data["Bottom"] != null) {
+    const bouy_bottom_X = course_data["Bottom"]["X"];
+    const bouy_bottom_Y = course_data["Bottom"]["Y"];
+    new Bouy(bouy_bottom_X, bouy_bottom_Y);
+  }
+
+  
+  if(course_data["Right"] != null) {
+    const bouy_right_X = course_data["Right"]["X"];
+    const bouy_right_Y = course_data["Right"]["Y"];
+    new Bouy(bouy_right_X, bouy_right_Y);
+  }
+
+}
+
 
 
 const operaHouse = new Operahose();
 const habourBridge = new HarbourBridge();
-
+generateBouy(course_data);
 
 const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
   useEffect(() => {
@@ -284,7 +310,7 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
       const data = timeAndXYData;
       const currentPosition = data[i];
 
-      if (currentPosition["X_Position"] && currentPosition["Y_Position"] !== null) {
+      if (currentPosition["X_Position"] && currentPosition["Y_Position"] != null) {
         const xPosition = currentPosition["X_Position"];
         const yPosition = currentPosition["Y_Position"];
         points.push(new THREE.Vector3(-xPosition, 1, yPosition));
