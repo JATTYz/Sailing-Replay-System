@@ -25,7 +25,7 @@ const FwdVelocityGraph = ({ time, fwdVelo, isRunning, frameIndex, setFrameIndex 
                 layout={{ 
                     width: 350, 
                     height: 350, 
-                    title: 'Foward Velocity', 
+                    title: 'Forward Velocity',
                     xaxis: { title: 'Time' }, 
                     yaxis: { title: 'Foward Velocity' }
                 }}

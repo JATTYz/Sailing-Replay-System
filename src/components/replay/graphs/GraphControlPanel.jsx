@@ -34,21 +34,21 @@ const GraphControlPanel = () => {
 
     const { CSVReader } = useCSVReader();
 
-    const handleData = result => {
-        setBoomAngle(result.data.slice(2).map(row => row[8]));
-        setFwdVelo(result.data.slice(2).map(row => row[3]));
-        setHeelAngle(result.data.slice(2).map(row => row[10]));
-        setHeading(result.data.slice(2).map(row => row[7]));
-        setHiking(result.data.slice(2).map(row => row[6]));
-        setRudderAngle(result.data.slice(2).map(row => row[9]));
-        setTime(result.data.slice(2).map(row => row[0]));
-        setWindVelo(result.data.slice(2).map(row => row[5]));
+    const handleData = sailData => {
+        setBoomAngle(sailData.map(row => row[8]));
+        setFwdVelo(sailData.map(row => row[3]));
+        setHeelAngle(sailData.map(row => row[10]));
+        setHeading(sailData.map(row => row[7]));
+        setHiking(sailData.map(row => row[6]));
+        setRudderAngle(sailData.map(row => row[9]));
+        setTime(sailData.map(row => row[0]));
+        setWindVelo(sailData.map(row => row[5]));
         setIsRunning(true);
     };
   
     return (
         <div className="graph_panel">
-             <CSVReader onUploadAccepted={handleData}>
+             <CSVReader onUploadAccepted={result => handleData(result.data.slice(1))} accept={`.sbp`}>
                 {({ getRootProps, acceptedFile, getRemoveFileProps }) => 
                     <div>
                         <button type="button" {...getRootProps()}>Browse file</button>

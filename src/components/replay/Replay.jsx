@@ -7,7 +7,6 @@ import { Water } from "three/addons/objects/Water.js";
 import { Sky } from "three/addons/objects/Sky.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import waternormals from "../../../public/assets/waternormals.jpg";
-import timeAndXYData from "../../data/timeAndXY.json";
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 
@@ -141,7 +140,7 @@ const operaHouse = new Operahose();
 const habourBridge = new HarbourBridge();
 
 
-const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
+const Replay = ({ canvasRef, upperHalfRef, mapRef, timeAndXYData }) => {
   useEffect(() => {
     // Access and use the ref in the child component
     if (upperHalfRef.current) {
