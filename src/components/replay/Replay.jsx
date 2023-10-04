@@ -29,11 +29,13 @@ class Boat {
       (gltf) => {
         scene.add(gltf.scene);
         gltf.scene.scale.set(2, 2, 2);
-        gltf.scene.position.set(17.3285, 1, -29.7828);
+        //set position based on the boat position.
+        gltf.scene.position.set(0, -10, 0);
         gltf.scene.rotation.y = -1.5;
         this.boat = gltf.scene;
         resolve(this.boat); // Resolve the promise when the object is loaded
-      },
+      }
+      ,
       undefined,
       reject
     );
@@ -135,9 +137,8 @@ class HarbourBridge {
   });
 }
 
-const boat = new Boat();
-const flag1 = new Flag(start_left_X, start_left_Y);
-const flag2 = new Flag(start_right_X, start_right_Y);
+// const boat = new Boat();
+
 
 function generateBouy () {
 
@@ -170,11 +171,18 @@ function generateBouy () {
 
 
 
-const operaHouse = new Operahose();
-const habourBridge = new HarbourBridge();
-generateBouy(course_data);
+// const operaHouse = new Operahose();
+
+// generateBouy(course_data);
 
 const Replay = ({ canvasRef, upperHalfRef, mapRef, timeAndXYData }) => {
+
+  const boat = new Boat()
+  const operaHouse = new Operahose();
+  const habourBridge = new HarbourBridge();
+  const flag1 = new Flag(start_left_X, start_left_Y);
+  const flag2 = new Flag(start_right_X, start_right_Y);
+  generateBouy(course_data);
   useEffect(() => {
     // Access and use the ref in the child component
     if (upperHalfRef.current) {
@@ -387,6 +395,8 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef, timeAndXYData }) => {
       scene.add(southMesh)
     })
 
+
+    
     // Start the animation loop
     animate();
     calculateIntervals();
@@ -432,13 +442,14 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef, timeAndXYData }) => {
 
   //Recurring function - render position at certain intervals
   function moveBoat() {
+   
     const currentInterval = timeIntervals[timeIndex];
     timeIndex++;
 
     if (timeIndex < timeIntervals.length) {
       const data = timeAndXYData;
       const currentPosition = data[timeIndex];
-
+  
       boat.getObject().then((loadedObject) => {
         loadedObject.position.set(
           -currentPosition.X_Position,
