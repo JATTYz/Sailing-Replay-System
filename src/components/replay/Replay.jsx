@@ -50,7 +50,6 @@ class Flag {
     this.x = x; // Store x, y, and z as instance variables
     this.y = y;
 
-
     this.loadingPromise = new Promise((resolve, reject) => {
       loader.load(
         "assets/flag/scene.gltf",
@@ -75,7 +74,6 @@ class Bouy {
   constructor(x, y) {
     this.x = x; // Store x, y, and z as instance variables
     this.y = y;
-
 
     this.loadingPromise = new Promise((resolve, reject) => {
       loader.load(
@@ -127,7 +125,6 @@ class HarbourBridge {
             material.color.set(0x616060);
           }
         });
-
 
         gltf.scene.scale.set(300, 300, 300);
         gltf.scene.position.set(300, 1, 150);
@@ -306,8 +303,6 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
     const points = [];
 
     for (let i = 1; i < timeAndXYData.length; i++) {
-
-    for (let i = 1; i < timeAndXYData.length; i++) {
       const data = timeAndXYData;
       const currentPosition = data[i];
 
@@ -320,7 +315,6 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
         points.push(new THREE.Vector3(-xPosition, 1, yPosition));
       }
     }
-
 
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
     const material = new THREE.LineBasicMaterial({
@@ -338,10 +332,6 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
       startingLine.push(new THREE.Vector3(0, 0, i));
       startingLine.push(new THREE.Vector3(-5, 0, i));
     }
-
-    const startingLinegeo = new THREE.BufferGeometry().setFromPoints(
-      startingLine
-    );
 
     const startingLinegeo = new THREE.BufferGeometry().setFromPoints(
       startingLine
@@ -377,13 +367,7 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
         size: 20,
         height: 2,
       });
-        height: 2,
-      });
 
-      const northMesh = new THREE.Mesh(textNorth);
-      northMesh.castShadow = true;
-      northMesh.position.set(0, 50, 200);
-      northMesh.rotateY(3);
       const northMesh = new THREE.Mesh(textNorth);
       northMesh.castShadow = true;
       northMesh.position.set(0, 50, 200);
@@ -392,8 +376,6 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
       const textSouth = new TextGeometry("South", {
         font: font,
         size: 30,
-        height: 2,
-      });
         height: 2,
       });
 
@@ -427,7 +409,6 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
     controls.update();
   }
 
-
   // Render function
   function render() {
     const time = performance.now() * 0.001;
@@ -460,29 +441,30 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
     timeIndex++;
 
     if (timeIndex < timeIntervals.length - 1) {
-    if (timeIndex < timeIntervals.length - 1) {
-      const data = timeAndXYData;
-      const currentPosition = data[timeIndex];
-      console.log("currentPosition", currentPosition);
-      if (currentPosition) {
-        if (currentPosition.X_Position && currentPosition.Y_Position) {
-          boat.getObject().then((loadedObject) => {
-            loadedObject.position.set(
-              -currentPosition.X_Position,
-              1,
-              currentPosition.Y_Position
-            );
-          });
+      if (timeIndex < timeIntervals.length - 1) {
+        const data = timeAndXYData;
+        const currentPosition = data[timeIndex];
+        console.log("currentPosition", currentPosition);
+        if (currentPosition) {
+          if (currentPosition.X_Position && currentPosition.Y_Position) {
+            boat.getObject().then((loadedObject) => {
+              loadedObject.position.set(
+                -currentPosition.X_Position,
+                1,
+                currentPosition.Y_Position
+              );
+            });
 
-          console.log("Current time index", timeIndex);
-          console.log("Timeintervals ", timeIntervals.length);
+            console.log("Current time index", timeIndex);
+            console.log("Timeintervals ", timeIntervals.length);
+          }
         }
+        setTimeout(moveBoat, currentInterval);
       }
-      setTimeout(moveBoat, currentInterval);
     }
-  }
 
-  return <div></div>;
+    return <div></div>;
+  }
 };
 
 export default Replay;
