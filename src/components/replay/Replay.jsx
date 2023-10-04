@@ -9,11 +9,16 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import waternormals from "../../../public/assets/waternormals.jpg";
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+import course_data from "../../data/course/Triangular_Small.json"
 
 let camera, scene, renderer;
 let controls, water, sun, northIndicator;
 let timeIntervals = [];
-let tempCube;
+
+const start_left_X = course_data["Start_left"]["X"];
+const start_left_Y = course_data["Start_left"]["Y"];
+const start_right_X = course_data["Start_right"]["X"];
+const start_right_Y = course_data["Start_right"]["Y"];
 
 const loader = new GLTFLoader();
 
@@ -95,7 +100,7 @@ class Operahose {
       "assets/opera-house/scene.gltf",
       (gltf) => {
         scene.add(gltf.scene);
-        gltf.scene.scale.set(5, 5, 5);
+        gltf.scene.scale.set(3, 3, 3);
         gltf.scene.position.set(151.24, 2, -33.85);
         gltf.scene.rotation.y = -1.5;
       },
@@ -131,14 +136,43 @@ class HarbourBridge {
 }
 
 const boat = new Boat();
-const flag1 = new Flag(3,10);
-const flag2 = new Flag(3,40);
-const mark1 = new Bouy(-50,25);
-const mark2 = new Bouy(0,-25);
-const mark3 = new Bouy(50,25);
+const flag1 = new Flag(start_left_X, start_left_Y);
+const flag2 = new Flag(start_right_X, start_right_Y);
+
+function generateBouy () {
+
+  if(course_data["Top"] != null){
+    const bouy_top_X = course_data["Top"]["X"];
+    const bouy_top_Y = course_data["Top"]["Y"];
+    new Bouy(bouy_top_X,bouy_top_Y);
+  }
+
+  if(course_data["Left"] != null) {
+    const bouy_left_X = course_data["Left"]["X"];
+    const bouy_left_Y = course_data["Left"]["Y"];
+    new Bouy(bouy_left_X, bouy_left_Y);
+  }
+
+  if(course_data["Bottom"] != null) {
+    const bouy_bottom_X = course_data["Bottom"]["X"];
+    const bouy_bottom_Y = course_data["Bottom"]["Y"];
+    new Bouy(bouy_bottom_X, bouy_bottom_Y);
+  }
+
+  
+  if(course_data["Right"] != null) {
+    const bouy_right_X = course_data["Right"]["X"];
+    const bouy_right_Y = course_data["Right"]["Y"];
+    new Bouy(bouy_right_X, bouy_right_Y);
+  }
+
+}
+
+
+
 const operaHouse = new Operahose();
 const habourBridge = new HarbourBridge();
-
+generateBouy(course_data);
 
 const Replay = ({ canvasRef, upperHalfRef, mapRef, timeAndXYData }) => {
   useEffect(() => {
@@ -275,7 +309,7 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef, timeAndXYData }) => {
       const data = timeAndXYData;
       const currentPosition = data[i];
 
-      if (currentPosition["X_Position"] && currentPosition["Y_Position"] !== null) {
+      if (currentPosition["X_Position"] && currentPosition["Y_Position"] != null) {
         const xPosition = currentPosition["X_Position"];
         const yPosition = currentPosition["Y_Position"];
         points.push(new THREE.Vector3(-xPosition, 1, yPosition));
@@ -295,9 +329,9 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef, timeAndXYData }) => {
 
     const startingLine = [];
     
-    for(let i = 10; i <= 40; i++){
+    for(let i = start_left_Y; i <= start_right_Y; i++){
       startingLine.push(new THREE.Vector3(0,0,i))
-      startingLine.push(new THREE.Vector3(0,10,i))
+      startingLine.push(new THREE.Vector3(-5,0,i))
     }
 
     const startingLinegeo = new THREE.BufferGeometry().setFromPoints(startingLine);
@@ -314,17 +348,18 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef, timeAndXYData }) => {
 
     fontLoader.load("fonts/helvetiker_bold.typeface.json", function( font ) {
     
-      const textgeo = new TextGeometry("Starting Point", {
-        font: font,
-        size: 3,
-        height:2
-      })
+      // const textgeo = new TextGeometry("Starting Point", {
+      //   font: font,
+      //   size: 3,
+      //   height:2
+      // })
 
-      const textMesh = new THREE.Mesh(textgeo)      
-      textMesh.castShadow = true
-      textMesh.position.set(0,10,12)
-      textMesh.rotateY(4.75)
-
+      // const textMesh = new THREE.Mesh(textgeo)      
+      // textMesh.castShadow = true
+      // textMesh.position.set(-5,0,start_left_X)
+      // textMesh.rotateY(0)
+      // textMesh.rotateX(50)
+      // scene.add(textMesh)
 
       const textNorth = new TextGeometry("North", {
         font: font,
@@ -348,8 +383,6 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef, timeAndXYData }) => {
       southMesh.position.set(0,50,-300)
       southMesh.rotateY(0)
 
-
-      scene.add(textMesh)
       scene.add(northMesh)
       scene.add(southMesh)
     })
