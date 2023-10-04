@@ -8,9 +8,9 @@ import { Sky } from "three/addons/objects/Sky.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import waternormals from "../../../public/assets/waternormals.jpg";
 import timeAndXYData from "../../data/timeAndXY.json";
-import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
-import { FontLoader } from 'three/addons/loaders/FontLoader.js';
-import course_data from "../../data/course/Triangular_Small.json"
+import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
+import { FontLoader } from "three/addons/loaders/FontLoader.js";
+import course_data from "../../data/course/Triangular_Small.json";
 
 let camera, scene, renderer;
 let controls, water, sun, northIndicator;
@@ -49,13 +49,13 @@ class Flag {
   constructor(x, y) {
     this.x = x; // Store x, y, and z as instance variables
     this.y = y;
-  
+
     this.loadingPromise = new Promise((resolve, reject) => {
       loader.load(
         "assets/flag/scene.gltf",
         (gltf) => {
           scene.add(gltf.scene);
-          gltf.scene.scale.set(1, 1, 1); 
+          gltf.scene.scale.set(1, 1, 1);
           gltf.scene.position.set(this.x, 1, this.y);
           gltf.scene.rotation.y = -1.5;
         },
@@ -74,13 +74,13 @@ class Bouy {
   constructor(x, y) {
     this.x = x; // Store x, y, and z as instance variables
     this.y = y;
-  
+
     this.loadingPromise = new Promise((resolve, reject) => {
       loader.load(
         "assets/bouy/scene.gltf",
         (gltf) => {
           scene.add(gltf.scene);
-          gltf.scene.scale.set(2, 2, 2); 
+          gltf.scene.scale.set(2, 2, 2);
           gltf.scene.position.set(this.x, 0, this.y);
           gltf.scene.rotation.y = -1.5;
         },
@@ -121,10 +121,10 @@ class HarbourBridge {
             const material = child.material;
             // Modify material color here
             const newColor = new THREE.Color(1, 0, 0); // Red
-            material.color.set(0x616060)
+            material.color.set(0x616060);
           }
         });
-        
+
         gltf.scene.scale.set(300, 300, 300);
         gltf.scene.position.set(300, 1, 150);
         gltf.scene.rotation.y = -1.5;
@@ -140,36 +140,31 @@ const boat = new Boat();
 const flag1 = new Flag(start_left_X, start_left_Y);
 const flag2 = new Flag(start_right_X, start_right_Y);
 
-function generateBouy () {
-
-  if(course_data["Top"] != null){
+function generateBouy() {
+  if (course_data["Top"] != null) {
     const bouy_top_X = course_data["Top"]["X"];
     const bouy_top_Y = course_data["Top"]["Y"];
-    new Bouy(bouy_top_X,bouy_top_Y);
+    new Bouy(bouy_top_X, bouy_top_Y);
   }
 
-  if(course_data["Left"] != null) {
+  if (course_data["Left"] != null) {
     const bouy_left_X = course_data["Left"]["X"];
     const bouy_left_Y = course_data["Left"]["Y"];
     new Bouy(bouy_left_X, bouy_left_Y);
   }
 
-  if(course_data["Bottom"] != null) {
+  if (course_data["Bottom"] != null) {
     const bouy_bottom_X = course_data["Bottom"]["X"];
     const bouy_bottom_Y = course_data["Bottom"]["Y"];
     new Bouy(bouy_bottom_X, bouy_bottom_Y);
   }
 
-  
-  if(course_data["Right"] != null) {
+  if (course_data["Right"] != null) {
     const bouy_right_X = course_data["Right"]["X"];
     const bouy_right_Y = course_data["Right"]["Y"];
     new Bouy(bouy_right_X, bouy_right_Y);
   }
-
 }
-
-
 
 const operaHouse = new Operahose();
 const habourBridge = new HarbourBridge();
@@ -186,9 +181,8 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
   function init() {
     //Temporary cube
 
-    
     // Create the WebGL renderer
-    renderer = new THREE.WebGLRenderer({ antialias: true,  });
+    renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
     // renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setSize(
@@ -305,18 +299,21 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
 
     // ====== load data and create map ======
     const points = [];
-    
-    for(let i = 1; i < timeAndXYData.length; i++){
+
+    for (let i = 1; i < timeAndXYData.length; i++) {
       const data = timeAndXYData;
       const currentPosition = data[i];
 
-      if (currentPosition["X_Position"] && currentPosition["Y_Position"] != null) {
+      if (
+        currentPosition["X_Position"] &&
+        currentPosition["Y_Position"] != null
+      ) {
         const xPosition = currentPosition["X_Position"];
         const yPosition = currentPosition["Y_Position"];
         points.push(new THREE.Vector3(-xPosition, 1, yPosition));
       }
     }
-   
+
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
     const material = new THREE.LineBasicMaterial({
       color: 0x0000ff,
@@ -327,18 +324,19 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
     const line = new THREE.Line(geometry, material);
     scene.add(line);
 
-
     const startingLine = [];
-    
-    for(let i = start_left_Y; i <= start_right_Y; i++){
-      startingLine.push(new THREE.Vector3(0,0,i))
-      startingLine.push(new THREE.Vector3(-5,0,i))
+
+    for (let i = start_left_Y; i <= start_right_Y; i++) {
+      startingLine.push(new THREE.Vector3(0, 0, i));
+      startingLine.push(new THREE.Vector3(-5, 0, i));
     }
 
-    const startingLinegeo = new THREE.BufferGeometry().setFromPoints(startingLine);
-   
+    const startingLinegeo = new THREE.BufferGeometry().setFromPoints(
+      startingLine
+    );
+
     const startingLinematerial = new THREE.LineBasicMaterial({
-      color: 0xAAFF00,
+      color: 0xaaff00,
       linewidth: 3,
     });
 
@@ -347,15 +345,14 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
 
     const fontLoader = new FontLoader();
 
-    fontLoader.load("fonts/helvetiker_bold.typeface.json", function( font ) {
-    
+    fontLoader.load("fonts/helvetiker_bold.typeface.json", function (font) {
       // const textgeo = new TextGeometry("Starting Point", {
       //   font: font,
       //   size: 3,
       //   height:2
       // })
 
-      // const textMesh = new THREE.Mesh(textgeo)      
+      // const textMesh = new THREE.Mesh(textgeo)
       // textMesh.castShadow = true
       // textMesh.position.set(-5,0,start_left_X)
       // textMesh.rotateY(0)
@@ -365,28 +362,28 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
       const textNorth = new TextGeometry("North", {
         font: font,
         size: 20,
-        height:2
-      })
+        height: 2,
+      });
 
-      const northMesh = new THREE.Mesh(textNorth)
-      northMesh.castShadow = true
-      northMesh.position.set(0,50,200)
-      northMesh.rotateY(3)
+      const northMesh = new THREE.Mesh(textNorth);
+      northMesh.castShadow = true;
+      northMesh.position.set(0, 50, 200);
+      northMesh.rotateY(3);
 
       const textSouth = new TextGeometry("South", {
         font: font,
         size: 30,
-        height:2
-      })
+        height: 2,
+      });
 
-      const southMesh = new THREE.Mesh(textSouth)
-      southMesh.castShadow = true
-      southMesh.position.set(0,50,-300)
-      southMesh.rotateY(0)
+      const southMesh = new THREE.Mesh(textSouth);
+      southMesh.castShadow = true;
+      southMesh.position.set(0, 50, -300);
+      southMesh.rotateY(0);
 
-      scene.add(northMesh)
-      scene.add(southMesh)
-    })
+      scene.add(northMesh);
+      scene.add(southMesh);
+    });
 
     // Start the animation loop
     animate();
@@ -408,7 +405,7 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
     render();
     controls.update();
   }
-  
+
   // Render function
   function render() {
     const time = performance.now() * 0.001;
@@ -420,13 +417,17 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
   // Calculate the time in Milliseconds between each time record point
   function calculateIntervals() {
     const data = timeAndXYData;
+    console.log("Data length", data.length);
 
-    //Retrieve intervals
-    for (let i = 2; i < data.length; i++) {
-      const interval = data[i].time - data[i - 1].time;
-      // console.log(interval);
-      timeIntervals.push(interval * 60 * 1000);
+    if (timeIntervals.length == 0) {
+      //Retrieve intervals
+      for (let i = 2; i < data.length; i++) {
+        const interval = data[i].time - data[i - 1].time;
+        // console.log(interval);
+        timeIntervals.push(interval * 60 * 1000);
+      }
     }
+    console.log("Finished timeintervals", timeIntervals.length);
   }
 
   let timeIndex = 0;
@@ -436,18 +437,24 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
     const currentInterval = timeIntervals[timeIndex];
     timeIndex++;
 
-    if (timeIndex < timeIntervals.length) {
+    if (timeIndex < timeIntervals.length - 1) {
       const data = timeAndXYData;
       const currentPosition = data[timeIndex];
+      console.log("currentPosition", currentPosition);
+      if (currentPosition) {
+        if (currentPosition.X_Position && currentPosition.Y_Position) {
+          boat.getObject().then((loadedObject) => {
+            loadedObject.position.set(
+              -currentPosition.X_Position,
+              1,
+              currentPosition.Y_Position
+            );
+          });
 
-      boat.getObject().then((loadedObject) => {
-        loadedObject.position.set(
-          -currentPosition.X_Position,
-          1,
-          currentPosition.Y_Position
-        );
-      });
-
+          console.log("Current time index", timeIndex);
+          console.log("Timeintervals ", timeIntervals.length);
+        }
+      }
       setTimeout(moveBoat, currentInterval);
     }
   }
