@@ -7,9 +7,9 @@ import { Water } from "three/addons/objects/Water.js";
 import { Sky } from "three/addons/objects/Sky.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import waternormals from "../../../public/assets/waternormals.jpg";
-import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
-import { FontLoader } from 'three/addons/loaders/FontLoader.js';
-import course_data from "../../data/course/Triangular_Small.json"
+import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
+import { FontLoader } from "three/addons/loaders/FontLoader.js";
+import course_data from "../../data/course/Triangular_Small.json";
 
 let camera, scene, renderer;
 let controls, water, sun, northIndicator;
@@ -34,8 +34,7 @@ class Boat {
         gltf.scene.rotation.y = -1.5;
         this.boat = gltf.scene;
         resolve(this.boat); // Resolve the promise when the object is loaded
-      }
-      ,
+      },
       undefined,
       reject
     );
@@ -140,7 +139,6 @@ class HarbourBridge {
 
 // const boat = new Boat();
 
-
 function generateBouy() {
   if (course_data["Top"] != null) {
     const bouy_top_X = course_data["Top"]["X"];
@@ -167,15 +165,12 @@ function generateBouy() {
   }
 }
 
-
-
 // const operaHouse = new Operahose();
 
 // generateBouy(course_data);
 
 const Replay = ({ canvasRef, upperHalfRef, mapRef, timeAndXYData }) => {
-
-  const boat = new Boat()
+  const boat = new Boat();
   const operaHouse = new Operahose();
   const habourBridge = new HarbourBridge();
   const flag1 = new Flag(start_left_X, start_left_Y);
@@ -396,8 +391,6 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef, timeAndXYData }) => {
       scene.add(southMesh);
     });
 
-
-    
     // Start the animation loop
     animate();
     calculateIntervals();
@@ -430,7 +423,6 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef, timeAndXYData }) => {
   // Calculate the time in Milliseconds between each time record point
   function calculateIntervals() {
     const data = timeAndXYData;
-    console.log("Data length", data.length);
 
     if (timeIntervals.length == 0) {
       //Retrieve intervals
@@ -440,25 +432,23 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef, timeAndXYData }) => {
         timeIntervals.push(interval * 60 * 1000);
       }
     }
-    console.log("Finished timeintervals", timeIntervals.length);
   }
 
   let timeIndex = 0;
 
   //Recurring function - render position at certain intervals
   function moveBoat() {
-   
     const currentInterval = timeIntervals[timeIndex];
     timeIndex++;
 
     if (timeIndex < timeIntervals.length - 1) {
-      if (timeIndex < timeIntervals.length - 1) {
-        const data = timeAndXYData;
-        const currentPosition = data[timeIndex];
-        
-        if (currentPosition) {
-          if (currentPosition.X_Position && currentPosition.Y_Position) {
-            boat.getObject().then((loadedObject) => {
+      const data = timeAndXYData;
+      const currentPosition = data[timeIndex];
+
+      if (currentPosition) {
+        if (currentPosition.X_Position && currentPosition.Y_Position) {
+          boat.getObject().then((loadedObject) => {
+            if (loadedObject) {
               loadedObject.position.set(
                 -currentPosition.X_Position,
                 1,
@@ -466,12 +456,12 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef, timeAndXYData }) => {
               );
 
               // we have to get the heading radians from other variable.
-              // loadedObject.rotation.y = currentPosition.headingRadians;
-            });
-          }
+              loadedObject.rotation.y = currentPosition.headingRadians;
+            }
+          });
         }
-        setTimeout(moveBoat, currentInterval);
       }
+      setTimeout(moveBoat, currentInterval);
     }
 
     return <div></div>;

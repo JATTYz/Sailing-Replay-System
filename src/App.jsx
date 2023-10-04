@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState } from "react";
 import Replay from "./components/replay/Replay";
 import "../src/main.css";
 import Map from "./components/Map";
@@ -30,7 +30,7 @@ const App = () => {
           />
         </div>
         <div id="map" ref={mapRef}>
-          <Map />
+          <Map timeAndXYData={timeAndXYData} />
         </div>
       </div>
       <div className="lower_half">
@@ -38,7 +38,16 @@ const App = () => {
       </div>
     </div>
   ) : (
-    <Landing setAssetLoaded={setAssetLoaded} setData={{ direction: setDirectionData, time: setTimeData, timeAndXY: setTimeAndXYData, fwdVelocity: setFwdVelocityData, hikingEffect: setHikingEffectData }} />
+    <Landing
+      setAssetLoaded={setAssetLoaded}
+      setData={{
+        direction: setDirectionData,
+        time: setTimeData,
+        timeAndXY: setTimeAndXYData,
+        fwdVelocity: setFwdVelocityData,
+        hikingEffect: setHikingEffectData,
+      }}
+    />
   );
 };
 
