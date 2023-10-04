@@ -339,7 +339,6 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
 
     const startingLinematerial = new THREE.LineBasicMaterial({
       color: 0xaaff00,
-      color: 0xaaff00,
       linewidth: 3,
     });
 
@@ -453,6 +452,7 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
                 1,
                 currentPosition.Y_Position
               );
+              loadedObject.rotation.y = currentPosition.headingRadians;
             });
 
             console.log("Current time index", timeIndex);
