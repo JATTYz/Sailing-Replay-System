@@ -45,6 +45,8 @@ readFile("Testsail.sbp", "utf8", (err, data) => {
       time: values[0] / 60.0,
       X_Position: values[1],
       Y_Position: values[2],
+      // heading: (values[6] * 180) / Math.PI,
+      headingRadians: ((values[6] * 180) / Math.PI) * (Math.PI / 180), //Get radians, but degrees
     };
   });
 

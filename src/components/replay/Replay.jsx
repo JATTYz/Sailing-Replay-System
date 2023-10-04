@@ -50,6 +50,7 @@ class Flag {
     this.x = x; // Store x, y, and z as instance variables
     this.y = y;
 
+
     this.loadingPromise = new Promise((resolve, reject) => {
       loader.load(
         "assets/flag/scene.gltf",
@@ -74,6 +75,7 @@ class Bouy {
   constructor(x, y) {
     this.x = x; // Store x, y, and z as instance variables
     this.y = y;
+
 
     this.loadingPromise = new Promise((resolve, reject) => {
       loader.load(
@@ -122,8 +124,10 @@ class HarbourBridge {
             // Modify material color here
             const newColor = new THREE.Color(1, 0, 0); // Red
             material.color.set(0x616060);
+            material.color.set(0x616060);
           }
         });
+
 
         gltf.scene.scale.set(300, 300, 300);
         gltf.scene.position.set(300, 1, 150);
@@ -182,6 +186,7 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
     //Temporary cube
 
     // Create the WebGL renderer
+    renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
     // renderer.setSize(window.innerWidth, window.innerHeight);
@@ -301,6 +306,8 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
     const points = [];
 
     for (let i = 1; i < timeAndXYData.length; i++) {
+
+    for (let i = 1; i < timeAndXYData.length; i++) {
       const data = timeAndXYData;
       const currentPosition = data[i];
 
@@ -313,6 +320,7 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
         points.push(new THREE.Vector3(-xPosition, 1, yPosition));
       }
     }
+
 
     const geometry = new THREE.BufferGeometry().setFromPoints(points);
     const material = new THREE.LineBasicMaterial({
@@ -335,7 +343,12 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
       startingLine
     );
 
+    const startingLinegeo = new THREE.BufferGeometry().setFromPoints(
+      startingLine
+    );
+
     const startingLinematerial = new THREE.LineBasicMaterial({
+      color: 0xaaff00,
       color: 0xaaff00,
       linewidth: 3,
     });
@@ -364,7 +377,13 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
         size: 20,
         height: 2,
       });
+        height: 2,
+      });
 
+      const northMesh = new THREE.Mesh(textNorth);
+      northMesh.castShadow = true;
+      northMesh.position.set(0, 50, 200);
+      northMesh.rotateY(3);
       const northMesh = new THREE.Mesh(textNorth);
       northMesh.castShadow = true;
       northMesh.position.set(0, 50, 200);
@@ -373,6 +392,8 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
       const textSouth = new TextGeometry("South", {
         font: font,
         size: 30,
+        height: 2,
+      });
         height: 2,
       });
 
@@ -406,11 +427,12 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
     controls.update();
   }
 
+
   // Render function
   function render() {
     const time = performance.now() * 0.001;
 
-    water.material.uniforms["time"].value += 1.0 / 60.0;
+    water.material.uniforms["time"].value += 1.0 / 150.0;
     renderer.render(scene, camera);
   }
 
@@ -437,6 +459,7 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef }) => {
     const currentInterval = timeIntervals[timeIndex];
     timeIndex++;
 
+    if (timeIndex < timeIntervals.length - 1) {
     if (timeIndex < timeIntervals.length - 1) {
       const data = timeAndXYData;
       const currentPosition = data[timeIndex];
