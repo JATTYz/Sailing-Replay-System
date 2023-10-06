@@ -17,7 +17,7 @@ const RudderAngleGraph = ({ time, rudderAngle, isRunning, frameIndex, setFrameIn
         <div>
             <Plot
                 data={[{ 
-                    x: time.slice(0, frameIndex + 1), 
+                    x: time, 
                     y: rudderAngle.slice(0, frameIndex + 1), 
                     type: 'scatter', 
                     marker: { color: 'green' } 

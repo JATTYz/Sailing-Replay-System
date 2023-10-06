@@ -16,6 +16,11 @@ const App = () => {
   const [timeAndXYData, setTimeAndXYData] = useState([]);
   const [fwdVelocityData, setFwdVelocityData] = useState([]);
   const [hikingEffectData, setHikingEffectData] = useState([]);
+  const [boomAngleData, setBoomAngleData] = useState([]);
+  const [heelAngleData, setHeelAngleData] = useState([]);
+  const [headingData, setHeadingData] = useState([]);
+  const [rudderAngleData, setRudderAngleData] = useState([]);
+  const [windVeloData, setWindVeloData] = useState([]);
 
   return isAssetLoaded ? (
     <div className="container">
@@ -34,7 +39,17 @@ const App = () => {
         </div>
       </div>
       <div className="lower_half">
-        <GraphControlPanel />
+        <GraphControlPanel 
+          boomAngle={boomAngleData}
+          fwdVelo={fwdVelocityData}
+          heelAngle={heelAngleData}
+          heading={headingData}
+          hiking={hikingEffectData}
+          rudderAngle={rudderAngleData}
+          time={timeData}
+          windVelo={windVeloData}
+          isAssetLoaded={isAssetLoaded}
+        />
       </div>
     </div>
   ) : (
@@ -46,6 +61,11 @@ const App = () => {
         timeAndXY: setTimeAndXYData,
         fwdVelocity: setFwdVelocityData,
         hikingEffect: setHikingEffectData,
+        boomAngle: setBoomAngleData,
+        heelAngle: setHeelAngleData,
+        heading: setHeadingData,
+        rudderAngle: setRudderAngleData,
+        windVelo: setWindVeloData
       }}
     />
   );

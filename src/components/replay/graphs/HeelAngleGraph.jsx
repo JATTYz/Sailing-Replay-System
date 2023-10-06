@@ -17,7 +17,7 @@ const HeelAngleGraph = ({ time, heelAngle, isRunning, frameIndex, setFrameIndex 
         <div>
             <Plot
                 data={[{ 
-                    x: time.slice(0, frameIndex + 1), 
+                    x: time, 
                     y: heelAngle.slice(0, frameIndex + 1), 
                     type: 'scatter', 
                     marker: { color: 'green' } 

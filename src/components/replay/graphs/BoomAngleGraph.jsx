@@ -17,7 +17,7 @@ const BoomAngleGraph = ({ time, boomAngle, isRunning, frameIndex, setFrameIndex 
         <div>
             <Plot
                 data={[{ 
-                    x: time.slice(0, frameIndex + 1), 
+                    x: time, 
                     y: boomAngle.slice(0, frameIndex + 1), 
                     type: 'scatter', 
                     marker: { color: 'green' } 

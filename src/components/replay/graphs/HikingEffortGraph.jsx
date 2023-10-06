@@ -17,8 +17,8 @@ const HikingEffortGraph = ({ time, hiking, isRunning, frameIndex, setFrameIndex 
         <div>
             <Plot
                 data={[{ 
-                    x: time.slice(0, frameIndex + 1), 
-                    y: hiking.slice(0, frameIndex + 1), 
+                    x: time, 
+                    y: hiking, 
                     type: 'scatter', 
                     marker: { color: 'green' } 
                 }]}

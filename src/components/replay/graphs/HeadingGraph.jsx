@@ -17,7 +17,7 @@ const HeadingGraph = ({ time, heading, isRunning, frameIndex, setFrameIndex }) =
         <div>
             <Plot
                 data={[{ 
-                    x: time.slice(0, frameIndex + 1), 
+                    x: time, 
                     y: heading.slice(0, frameIndex + 1), 
                     type: 'scatter', 
                     marker: { color: 'green' } 

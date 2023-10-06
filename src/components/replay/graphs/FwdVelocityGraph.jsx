@@ -17,8 +17,8 @@ const FwdVelocityGraph = ({ time, fwdVelo, isRunning, frameIndex, setFrameIndex 
         <div>
             <Plot
                 data={[{ 
-                    x: time.slice(0, frameIndex + 1), 
-                    y: fwdVelo.slice(0, frameIndex + 1), 
+                    x: time, 
+                    y: fwdVelo, 
                     type: 'scatter', 
                     marker: { color: 'green' } 
                 }]}

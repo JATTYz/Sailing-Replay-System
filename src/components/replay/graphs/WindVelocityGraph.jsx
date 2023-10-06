@@ -17,7 +17,7 @@ const WindVelocityGraph = ({ time, windVelo, isRunning, frameIndex, setFrameInde
         <div>
             <Plot
                 data={[{ 
-                    x: time.slice(0, frameIndex + 1), 
+                    x: time, 
                     y: windVelo.slice(0, frameIndex + 1), 
                     type: 'scatter', 
                     marker: { color: 'green' } 
