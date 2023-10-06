@@ -9,16 +9,20 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import waternormals from "../../../public/assets/waternormals.jpg";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
-import course_data from "../../data/course/Triangular_Small.json";
+import Crosswind_Small from "../../data/course/Crosswind_Small.json";
+import Crosswind_Big from "../../data/course/Crosswind_Big.json";
+import Trapezoid_Small from "../../data/course/Trapezoid_Small.json";
+import Trapezoid_Big from "../../data/course/Trapezoid_Big.json";
+import Triangular_Small from "../../data/course/Triangular_Small.json";
+import Triangular_Big from "../../data/course/Triangular_Big.json";
+import UpDown_Small from "../../data/course/UpDown_Small.json";
+import UpDown_Big from "../../data/course/UpDown_Big.json";
+
 
 let camera, scene, renderer;
 let controls, water, sun, northIndicator;
 let timeIntervals = [];
-
-const start_left_X = course_data["Start_left"]["X"];
-const start_left_Y = course_data["Start_left"]["Y"];
-const start_right_X = course_data["Start_right"]["X"];
-const start_right_Y = course_data["Start_right"]["Y"];
+let course_data;
 
 const loader = new GLTFLoader();
 
@@ -165,17 +169,50 @@ function generateBouy() {
   }
 }
 
-// const operaHouse = new Operahose();
 
-// generateBouy(course_data);
+async function importCourseData(courseData) {
+  try{
+    switch (courseData) {
+      case '1,0':
+        course_data = Crosswind_Small;
+        break;
+      case '1,1':
+        course_data = Crosswind_Big;
+        break;
+      case '2,0':
+        course_data = Trapezoid_Small;
+        break;
+      case '2,1':
+        course_data = Trapezoid_Big;
+        break;
+      case '3,0':
+        course_data = Triangular_Small;
+        break;
+      case '3,1':
+        course_data = Triangular_Big;
+        break;
+      case '4,0':
+        course_data = UpDown_Small;
+        break;
+      case '4,1':
+        course_data = UpDown_Big;
+        break;
+      default:
+        console.error('Invalid course data:', courseData);
+  }} catch(e) {
+    console.error(`Error importing JSON data: ${error}`);
+  }
+}
 
-const Replay = ({ canvasRef, upperHalfRef, mapRef, timeAndXYData }) => {
+const Replay = ({ canvasRef, upperHalfRef, mapRef, timeAndXYData, courseData }) => {
   const boat = new Boat();
   const operaHouse = new Operahose();
   const habourBridge = new HarbourBridge();
-  const flag1 = new Flag(start_left_X, start_left_Y);
-  const flag2 = new Flag(start_right_X, start_right_Y);
+
+  importCourseData(courseData)
   generateBouy(course_data);
+  new Flag(course_data["Start_left"]["X"], course_data["Start_left"]["Y"]);
+  new Flag(course_data["Start_right"]["X"], course_data["Start_right"]["Y"]);
   useEffect(() => {
     // Access and use the ref in the child component
     if (upperHalfRef.current) {
@@ -331,7 +368,7 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef, timeAndXYData }) => {
 
     const startingLine = [];
 
-    for (let i = start_left_Y; i <= start_right_Y; i++) {
+    for (let i = course_data["Start_left"]["Y"]; i <= course_data["Start_right"]["Y"]; i++) {
       startingLine.push(new THREE.Vector3(0, 0, i));
       startingLine.push(new THREE.Vector3(-5, 0, i));
     }
