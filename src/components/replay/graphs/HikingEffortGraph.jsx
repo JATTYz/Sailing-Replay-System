@@ -7,7 +7,7 @@ const HikingEffortGraph = ({ time, hiking, isRunning, frameIndex, setFrameIndex 
             const timeDifference = time[frameIndex + 1] - time[frameIndex];
             const animationTimeout = setTimeout(() => {
             setFrameIndex(frameIndex + 1);
-          }, timeDifference * 1000);
+          }, timeDifference * 60 * 1000);
     
           return () => clearTimeout(animationTimeout);
         }
@@ -17,8 +17,8 @@ const HikingEffortGraph = ({ time, hiking, isRunning, frameIndex, setFrameIndex 
         <div>
             <Plot
                 data={[{ 
-                    x: time, 
-                    y: hiking, 
+                    x: time.slice(0, frameIndex + 1), 
+                    y: hiking.slice(0, frameIndex + 1), 
                     type: 'scatter', 
                     marker: { color: 'green' } 
                 }]}

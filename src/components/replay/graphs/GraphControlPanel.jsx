@@ -15,7 +15,7 @@ const GraphOptions = ['BOOM_ANGLE', 'FWD_VELOCITY', 'HEADING', 'HEEL_ANGLE', 'HI
 const GraphControlPanel = ({ boomAngle, fwdVelo, heelAngle, heading, hiking, rudderAngle, time, windVelo, isAssetLoaded }) => {
     const [frameIndex, setFrameIndex] = useState(0);
     const [proccessTime, setProcessTime] = useState([]);
-    const [proccsessFwd, setProccessFwd] = useState([]);
+    const [proccessFwd, setProcessFwd] = useState([]);
     const [proccessHiking, setProcessHiking] = useState([]);
     const [plotsDispState, togglePlotsDispState] = useReducer(
         (_plotsDispState, plotsDispStateChange) =>
@@ -26,15 +26,14 @@ const GraphControlPanel = ({ boomAngle, fwdVelo, heelAngle, heading, hiking, rud
     );
 
     useEffect(() => {
-        if (time.length > 0) {
-            time.map(_time => setProcessTime(_time.time));
-        }
-        if (fwdVelo.length > 0) {
-            fwdVelo.map(_fwd => setProccessFwd(_fwd.fwd_velocity));
-        }
-        if (hiking.length > 0) {
-            hiking.map(_hiking => setProcessHiking(_hiking.hiking_effect));
-        }
+        const timeValue = time.map(_time => _time.time);
+        setProcessTime(timeValue);
+    
+        const fwdValue = fwdVelo.map(_fwd => _fwd.fwd_velocity);
+        setProcessFwd(fwdValue);
+    
+        const hikingValue =  hiking.map(_hiking =>_hiking.hiking_effect);
+        setProcessHiking(hikingValue);
     }, [])
 
     return (
@@ -49,7 +48,7 @@ const GraphControlPanel = ({ boomAngle, fwdVelo, heelAngle, heading, hiking, rud
             </div>
             { plotsDispState.map(dispState =>
                 dispState === 'BOOM_ANGLE' && <BoomAngleGraph time={proccessTime} boomAngle={boomAngle} isRunning={isAssetLoaded} frameIndex={frameIndex} setFrameIndex={setFrameIndex} />
-                || dispState === 'FWD_VELOCITY' && <FwdVelocityGraph time={proccessTime} fwdVelo={proccsessFwd} isRunning={isAssetLoaded} frameIndex={frameIndex} setFrameIndex={setFrameIndex} />
+                || dispState === 'FWD_VELOCITY' && <FwdVelocityGraph time={proccessTime} fwdVelo={proccessFwd} isRunning={isAssetLoaded} frameIndex={frameIndex} setFrameIndex={setFrameIndex} />
                 || dispState === 'HEADING' && <HeadingGraph time={proccessTime} heading={heading} isRunning={isAssetLoaded} frameIndex={frameIndex} setFrameIndex={setFrameIndex} />
                 || dispState === 'HEEL_ANGLE' && <HeelAngleGraph time={proccessTime} heelAngle={heelAngle} isRunning={isAssetLoaded} frameIndex={frameIndex} setFrameIndex={setFrameIndex} />
                 || dispState === 'HIKING_EFFORT' && <HikingEffortGraph time={proccessTime} hiking={proccessHiking} isRunning={isAssetLoaded} frameIndex={frameIndex} setFrameIndex={setFrameIndex} />

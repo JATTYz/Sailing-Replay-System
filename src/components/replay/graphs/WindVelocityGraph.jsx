@@ -7,7 +7,7 @@ const WindVelocityGraph = ({ time, windVelo, isRunning, frameIndex, setFrameInde
             const timeDifference = time[frameIndex + 1] - time[frameIndex];
             const animationTimeout = setTimeout(() => {
             setFrameIndex(frameIndex + 1);
-          }, timeDifference * 1000);
+          }, timeDifference * 60 * 1000);
     
           return () => clearTimeout(animationTimeout);
         }
@@ -17,7 +17,7 @@ const WindVelocityGraph = ({ time, windVelo, isRunning, frameIndex, setFrameInde
         <div>
             <Plot
                 data={[{ 
-                    x: time, 
+                    x: time.slice(0, frameIndex + 1), 
                     y: windVelo.slice(0, frameIndex + 1), 
                     type: 'scatter', 
                     marker: { color: 'green' } 
