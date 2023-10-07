@@ -8,8 +8,11 @@ const Landing = ({ setAssetLoaded, setData }) => {
   const handleData = (result) => {
     const [metadata, ...sailData] = result.data;
 
+    // console.log("metadata", metadata);
     //Course type = metadata[4]
     // Course big/small = metadata[5]
+ 
+    setData.courseData(`${metadata[4].toString()},${metadata[5].toString()}`);
 
     setData.time(sailData.map((row) => ({ time: row[0] / 60.0 })));
 

@@ -10,6 +10,7 @@ const App = () => {
   const canvasRef = useRef(null);
   const upperHalfRef = useRef(null);
   const mapRef = useRef(null);
+  const [courseData, setCourseData] = useState();
   const [isAssetLoaded, setAssetLoaded] = useState(false);
   const [directionData, setDirectionData] = useState([]);
   const [timeData, setTimeData] = useState([]);
@@ -31,11 +32,15 @@ const App = () => {
             canvasRef={canvasRef}
             upperHalfRef={upperHalfRef}
             mapRef={mapRef}
+            courseData={courseData}
             timeAndXYData={timeAndXYData}
           />
         </div>
         <div id="map" ref={mapRef}>
-          <Map timeAndXYData={timeAndXYData} />
+          <Map 
+            timeAndXYData={timeAndXYData} 
+            courseData={courseData}
+            />
         </div>
       </div>
       <div className="lower_half">
@@ -56,6 +61,7 @@ const App = () => {
     <Landing
       setAssetLoaded={setAssetLoaded}
       setData={{
+        courseData: setCourseData,
         direction: setDirectionData,
         time: setTimeData,
         timeAndXY: setTimeAndXYData,
