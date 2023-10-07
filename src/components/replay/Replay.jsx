@@ -195,7 +195,6 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef, timeAndXYData }) => {
       canvasRef.current.clientWidth,
       mapRef.current.clientHeight
     );
-    console.log(canvasRef);
     renderer.toneMapping = THREE.ReinhardToneMapping;
     renderer.setClearColor(0x000000);
     renderer.domElement.style.position = "fixed";

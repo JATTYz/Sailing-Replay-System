@@ -8,7 +8,6 @@ const Landing = ({ setAssetLoaded, setData }) => {
   const handleData = (result) => {
     const [metadata, ...sailData] = result.data;
 
-    console.log("metadata", metadata);
     //Course type = metadata[4]
     // Course big/small = metadata[5]
 
@@ -31,7 +30,15 @@ const Landing = ({ setAssetLoaded, setData }) => {
       sailData.map((row) => ({ fwd_velocity: row[6] / -0.3631 }))
     );
 
-    setData.hikingEffect(sailData.map((row) => ({ hiking_effect: row[14] })));
+    setData.hikingEffect(
+      sailData.map((row) => ({ hiking_effect: row[14] }))
+    );
+
+    setData.boomAngle(sailData.map(row => row[8]));
+    setData.heelAngle(sailData.map(row => row[10]));
+    setData.heading(sailData.map(row => row[7]));
+    setData.rudderAngle(sailData.map(row => row[9]));
+    setData.windVelo(sailData.map(row => row[5]));
   };
 
   return (

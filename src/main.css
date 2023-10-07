@@ -16,7 +16,7 @@ html, body{
 .lower_half {
     height: 35vh;
     width: 100%;
-    background-color: red;
+    background-color: white;
     position: relative;
 }
 #render{
@@ -44,5 +44,15 @@ canvas {
 }
 .graph_panel {
     display: flex;
-    gap: 20px
+    gap: 20px;
+}
+
+.graph_container {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+}
+
+.graph_container > div{
+    width: 50%
 }

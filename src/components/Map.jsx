@@ -39,7 +39,6 @@ const Map = ({ timeAndXYData }) => {
       const data = timeAndXYData;
       const currentPosition = data[timeIndex];
 
-      console.log(currentPosition);
       if (currentPosition) {
         if (currentPosition.X_Position && currentPosition.Y_Position) {
           setX_AXIS((prevX_AXIS) => [
