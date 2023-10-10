@@ -18,7 +18,6 @@ import Triangular_Big from "../../data/course/Triangular_Big.json";
 import UpDown_Small from "../../data/course/UpDown_Small.json";
 import UpDown_Big from "../../data/course/UpDown_Big.json";
 
-
 let camera, scene, renderer;
 let controls, water, sun, northIndicator;
 let timeIntervals = [];
@@ -105,9 +104,9 @@ class Operahose {
       "assets/opera-house/scene.gltf",
       (gltf) => {
         scene.add(gltf.scene);
-        gltf.scene.scale.set(3, 3, 3);
-        gltf.scene.position.set(151.24, 2, -33.85);
-        gltf.scene.rotation.y = -1.5;
+        gltf.scene.scale.set(4, 4, 4);
+        gltf.scene.position.set(300.24, 2, -33.85);
+        gltf.scene.rotation.y = -4.8;
       },
       undefined,
       reject
@@ -130,9 +129,9 @@ class HarbourBridge {
           }
         });
 
-        gltf.scene.scale.set(300, 300, 300);
-        gltf.scene.position.set(300, 1, 150);
-        gltf.scene.rotation.y = -1.5;
+        gltf.scene.scale.set(500, 500, 500);
+        gltf.scene.position.set(700, 1, 150);
+        gltf.scene.rotation.y = -5;
         scene.add(gltf.scene);
       },
       undefined,
@@ -169,48 +168,55 @@ function generateBouy() {
   }
 }
 
-
 async function importCourseData(courseData) {
-  try{
+  try {
     switch (courseData) {
-      case '1,0':
+      case "1,0":
         course_data = Crosswind_Small;
         break;
-      case '1,1':
+      case "1,1":
         course_data = Crosswind_Big;
         break;
-      case '2,0':
+      case "2,0":
         course_data = Trapezoid_Small;
         break;
-      case '2,1':
+      case "2,1":
         course_data = Trapezoid_Big;
         break;
-      case '3,0':
+      case "3,0":
         course_data = Triangular_Small;
         break;
-      case '3,1':
+      case "3,1":
         course_data = Triangular_Big;
         break;
-      case '4,0':
+      case "4,0":
         course_data = UpDown_Small;
         break;
-      case '4,1':
+      case "4,1":
         course_data = UpDown_Big;
         break;
       default:
-        console.error('Invalid course data:', courseData);
-  }} catch(e) {
+        console.error("Invalid course data:", courseData);
+    }
+  } catch (e) {
     console.error(`Error importing JSON data: ${error}`);
   }
 }
 
-const Replay = ({ canvasRef, upperHalfRef, mapRef, timeAndXYData, courseData }) => {
+const Replay = ({
+  canvasRef,
+  upperHalfRef,
+  mapRef,
+  timeAndXYData,
+  courseData,
+}) => {
   const boat = new Boat();
   const operaHouse = new Operahose();
   const habourBridge = new HarbourBridge();
-
-  importCourseData(courseData)
-  generateBouy(course_data);
+  console.log("COURSE DATA", courseData);
+  importCourseData(courseData);
+  console.log("SET COURSE DATA", course_data);
+  generateBouy();
   new Flag(course_data["Start_left"]["X"], course_data["Start_left"]["Y"]);
   new Flag(course_data["Start_right"]["X"], course_data["Start_right"]["Y"]);
   useEffect(() => {
@@ -368,7 +374,11 @@ const Replay = ({ canvasRef, upperHalfRef, mapRef, timeAndXYData, courseData }) 
 
     const startingLine = [];
 
-    for (let i = course_data["Start_left"]["Y"]; i <= course_data["Start_right"]["Y"]; i++) {
+    for (
+      let i = course_data["Start_left"]["Y"];
+      i <= course_data["Start_right"]["Y"];
+      i++
+    ) {
       startingLine.push(new THREE.Vector3(0, 0, i));
       startingLine.push(new THREE.Vector3(-5, 0, i));
     }
