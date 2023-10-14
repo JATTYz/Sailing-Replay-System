@@ -9,7 +9,6 @@ import Triangular_Small from "../data/course/Triangular_Small.json";
 import Triangular_Big from "../data/course/Triangular_Big.json";
 import UpDown_Small from "../data/course/UpDown_Small.json";
 import UpDown_Big from "../data/course/UpDown_Big.json";
-// import timeAndXYData from "../data/timeAndXY.json";
 
 let course_data;
 async function importCourseData(courseData) {
@@ -49,6 +48,7 @@ async function importCourseData(courseData) {
 const Map = ({ timeAndXYData, courseData }) => {
   const [X_AXIS, setX_AXIS] = useState([]);
   const [Y_AXIS, setY_AXIS] = useState([]);
+  const [time, setTime] = useState();
   const timeIntervals = [];
 
   useEffect(() => {
@@ -94,6 +94,7 @@ const Map = ({ timeAndXYData, courseData }) => {
             ...prevY_AXIS,
             currentPosition.Y_Position,
           ]);
+          setTime(currentPosition.time.toString().slice(0, 8));
         }
       }
 
@@ -259,6 +260,8 @@ const Map = ({ timeAndXYData, courseData }) => {
   }
 
   return (
+    <>
+    <p>TIMER: {time}</p>
     <Plot
       data={plotData}
       layout={{
@@ -270,6 +273,8 @@ const Map = ({ timeAndXYData, courseData }) => {
         }
       }}
     />
+    
+  </>
   );
 };
 
