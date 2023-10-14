@@ -1,11 +1,12 @@
 /* eslint-disable no-unused-vars */
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useCallback } from "react";
 import Replay from "./components/replay/Replay";
 import "../src/main.css";
 import Map from "./components/Map";
 import GraphControlPanel from "./components/replay/graphs/GraphControlPanel";
 import Landing from "./components/Landing.jsx";
-
+import Controls from "./components/replay/controls/Controls";
+import { RestartProvider } from "./util/restartContext";
 const App = () => {
   const canvasRef = useRef(null);
   const upperHalfRef = useRef(null);
@@ -23,40 +24,46 @@ const App = () => {
   const [rudderAngleData, setRudderAngleData] = useState([]);
   const [windVeloData, setWindVeloData] = useState([]);
 
+  // make wrapper function to give child
+
   return isAssetLoaded ? (
-    <div className="container">
-      {/* <p style={{ textAlign: "center" }}>HELLO WORLD ^_^</p> */}
-      <div className="upper_half" ref={upperHalfRef}>
-        <div id="render" ref={canvasRef}>
-          <Replay
-            canvasRef={canvasRef}
-            upperHalfRef={upperHalfRef}
-            mapRef={mapRef}
-            courseData={courseData}
-            timeAndXYData={timeAndXYData}
+    <RestartProvider>
+      <div className="container">
+        {/* <p style={{ textAlign: "center" }}>HELLO WORLD ^_^</p> */}
+        <div className="upper_half" ref={upperHalfRef}>
+          <div id="render" ref={canvasRef}>
+            <Replay
+              canvasRef={canvasRef}
+              upperHalfRef={upperHalfRef}
+              mapRef={mapRef}
+              courseData={courseData}
+              timeAndXYData={timeAndXYData}
+            />
+          </div>
+          <div id="map-container" ref={mapRef}>
+            <Map
+              timeAndXYData={timeAndXYData}
+              courseData={courseData}
+              id="map"
+            />
+            <Controls id="controls" />
+          </div>
+        </div>
+        <div className="lower_half">
+          <GraphControlPanel
+            boomAngle={boomAngleData}
+            fwdVelo={fwdVelocityData}
+            heelAngle={heelAngleData}
+            heading={headingData}
+            hiking={hikingEffectData}
+            rudderAngle={rudderAngleData}
+            time={timeData}
+            windVelo={windVeloData}
+            isAssetLoaded={isAssetLoaded}
           />
         </div>
-        <div id="map" ref={mapRef}>
-          <Map 
-            timeAndXYData={timeAndXYData} 
-            courseData={courseData}
-            />
-        </div>
       </div>
-      <div className="lower_half">
-        <GraphControlPanel 
-          boomAngle={boomAngleData}
-          fwdVelo={fwdVelocityData}
-          heelAngle={heelAngleData}
-          heading={headingData}
-          hiking={hikingEffectData}
-          rudderAngle={rudderAngleData}
-          time={timeData}
-          windVelo={windVeloData}
-          isAssetLoaded={isAssetLoaded}
-        />
-      </div>
-    </div>
+    </RestartProvider>
   ) : (
     <Landing
       setAssetLoaded={setAssetLoaded}
@@ -71,7 +78,7 @@ const App = () => {
         heelAngle: setHeelAngleData,
         heading: setHeadingData,
         rudderAngle: setRudderAngleData,
-        windVelo: setWindVeloData
+        windVelo: setWindVeloData,
       }}
     />
   );

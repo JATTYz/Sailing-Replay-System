@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Water } from "three/addons/objects/Water.js";
@@ -17,12 +17,13 @@ import Triangular_Small from "../../data/course/Triangular_Small.json";
 import Triangular_Big from "../../data/course/Triangular_Big.json";
 import UpDown_Small from "../../data/course/UpDown_Small.json";
 import UpDown_Big from "../../data/course/UpDown_Big.json";
+import { useRestart } from "../../util/restartContext";
 
 let camera, scene, renderer;
 let controls, water, sun, northIndicator;
 let timeIntervals = [];
 let course_data;
-
+let boat;
 const loader = new GLTFLoader();
 
 class Boat {
@@ -213,22 +214,44 @@ const Replay = ({
   const boat = new Boat();
   const operaHouse = new Operahose();
   const habourBridge = new HarbourBridge();
-  console.log("COURSE DATA", courseData);
+
   importCourseData(courseData);
-  console.log("SET COURSE DATA", course_data);
+  // console.log("SET COURSE DATA", course_data);
   generateBouy();
   new Flag(course_data["Start_left"]["X"], course_data["Start_left"]["Y"]);
   new Flag(course_data["Start_right"]["X"], course_data["Start_right"]["Y"]);
+  console.log("COURSE DATA", courseData);
+  console.log("Re-render index", timeIndex);
+
+  const [shouldContinue, setShouldContinue] = useState(false);
+  // Context shared for Restart feature
+  const { restart, setRestartFalse } = useRestart();
+
+  const [isInit, setIsInit] = useState(false);
+  let timeIndex = 0;
+  const [curentIndex, setCurrentIndex] = useState(false); //NOTE: I think we need to use State instead of timeIndex  (line 233) for this restart function to work. BUT setState is very bad for performance and crashes the app.
+
   useEffect(() => {
-    // Access and use the ref in the child component
-    if (upperHalfRef.current) {
-      init();
+    if (!isInit) {
+      if (upperHalfRef.current) {
+        init();
+        setIsInit(true);
+      }
     }
-  }, []);
+
+    //When restart state changes -> Causes component to render for restart??
+    if (restart) {
+      // Call the restart function or animation here
+      timeIndex = 0;
+      console.log("Restarting the 3D journey...");
+      console.log("Move boat again...");
+      console.log("timeindex", timeIndex);
+      moveBoat();
+      setRestartFalse();
+    }
+  }, [restart]); //Refresh when restart changes?
 
   function init() {
-    //Temporary cube
-
     // Create the WebGL renderer
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -440,7 +463,10 @@ const Replay = ({
     // Start the animation loop
     animate();
     calculateIntervals();
-    moveBoat();
+
+    setTimeout(() => {
+      moveBoat();
+    }, 2000);
   }
 
   // Function to handle window resize
@@ -480,14 +506,22 @@ const Replay = ({
     }
   }
 
-  let timeIndex = 0;
+  // let timeIndex = 0;
 
   //Recurring function - render position at certain intervals
   function moveBoat() {
-    const currentInterval = timeIntervals[timeIndex];
-    timeIndex++;
+    console.log("moveBoat restart", restart);
+    // Check if shouldContinue is false, if so, break out of recursion
+    //NOTE : Doesn't work because we  need to use State instead of 'let timeIndex'
+    if (restart) {
+      console.log("RETURN======");
+      return;
+    }
 
+    const currentInterval = timeIntervals[timeIndex];
+    timeIndex;
     if (timeIndex < timeIntervals.length - 1) {
+      console.log(timeIndex);
       const data = timeAndXYData;
       const currentPosition = data[timeIndex];
 
