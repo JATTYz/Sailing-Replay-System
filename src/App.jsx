@@ -25,9 +25,9 @@ const App = () => {
 
   return isAssetLoaded ? (
     <div className="container">
-      {/* <p style={{ textAlign: "center" }}>HELLO WORLD ^_^</p> */}
       <div className="upper_half" ref={upperHalfRef}>
         <div id="render" ref={canvasRef}>
+        {/* <p style={{ position:"absolute", textAlign: "center", }}>HELLO WORLD ^_^</p> */}
           <Replay
             canvasRef={canvasRef}
             upperHalfRef={upperHalfRef}
