@@ -2,7 +2,7 @@
 ## Group AC4 - Technology Application Project 2023, Swinburne University of Technology
 
 Welcome to the Sail Journey 3D Graphic Render project! This application is designed to replay and visualize sail journeys in 3D graphics. Below, you'll find an overview of the technologies and tools used in this project.
-
+![Sail Journey Logo](https://github.com/JATTYz/TAP-AC4-2023/blob/main/public/3Dpage.png)
 ## Tech Stack
 
 - **Web-based**: This application is compatible for web-based usage, ensuring accessibility for users across different platforms.
