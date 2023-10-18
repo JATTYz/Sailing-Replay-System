@@ -31,7 +31,6 @@ const HikingEffortGraph = ({
           },
         ]}
         layout={{
-          height: 350,
           title: "Hiking Effort",
           xaxis: { title: "Time" },
           yaxis: { title: "Hiking Effort" },

@@ -31,7 +31,6 @@ const WindVelocityGraph = ({
           },
         ]}
         layout={{
-          height: 350,
           title: "Wind Velocity",
           xaxis: { title: "Time" },
           yaxis: { title: "Wind Velocity" },

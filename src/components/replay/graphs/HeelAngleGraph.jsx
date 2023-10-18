@@ -31,7 +31,6 @@ const HeelAngleGraph = ({
           },
         ]}
         layout={{
-          height: 350,
           title: "Heel Angle",
           xaxis: { title: "Time" },
           yaxis: { title: "Heel Angle" },

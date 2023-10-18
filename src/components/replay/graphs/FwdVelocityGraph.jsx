@@ -31,7 +31,6 @@ const FwdVelocityGraph = ({
           },
         ]}
         layout={{
-          height: 350,
           title: "Forward Velocity",
           xaxis: { title: "Time" },
           yaxis: { title: "Foward Velocity" },

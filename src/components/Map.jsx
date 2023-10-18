@@ -12,35 +12,36 @@ import UpDown_Big from "../data/course/UpDown_Big.json";
 
 let course_data;
 async function importCourseData(courseData) {
-  try{
+  try {
     switch (courseData) {
-      case '1,0':
+      case "1,0":
         course_data = Crosswind_Small;
         break;
-      case '1,1':
+      case "1,1":
         course_data = Crosswind_Big;
         break;
-      case '2,0':
+      case "2,0":
         course_data = Trapezoid_Small;
         break;
-      case '2,1':
+      case "2,1":
         course_data = Trapezoid_Big;
         break;
-      case '3,0':
+      case "3,0":
         course_data = Triangular_Small;
         break;
-      case '3,1':
+      case "3,1":
         course_data = Triangular_Big;
         break;
-      case '4,0':
+      case "4,0":
         course_data = UpDown_Small;
         break;
-      case '4,1':
+      case "4,1":
         course_data = UpDown_Big;
         break;
       default:
-        console.error('Invalid course data:', courseData);
-  }} catch(e) {
+        console.error("Invalid course data:", courseData);
+    }
+  } catch (e) {
     console.error(`Error importing JSON data: ${error}`);
   }
 }
@@ -104,177 +105,173 @@ const Map = ({ timeAndXYData, courseData }) => {
 
   const plotData = [
     {
-        x: X_AXIS,
-        y: Y_AXIS,
-        type: "scatter",
-        marker: { color: "green"},
-        showlegend: false,
-    }
-   
+      x: X_AXIS,
+      y: Y_AXIS,
+      type: "scatter",
+      marker: { color: "green" },
+      showlegend: false,
+    },
   ];
 
-  if(course_data == Crosswind_Small || course_data == Crosswind_Big){
+  if (course_data == Crosswind_Small || course_data == Crosswind_Big) {
     plotData.push({
-      x:[course_data["Left"]["X"]],
+      x: [course_data["Left"]["X"]],
       y: [course_data["Left"]["Y"]],
-      type: 'scatter',
-      mode: 'markers',
+      type: "scatter",
+      mode: "markers",
       marker: {
-        color: 'red',
+        color: "red",
         size: 10,
-      }
-    })
+      },
+    });
 
     plotData.push({
-      x:[course_data["Right"]["X"]],
+      x: [course_data["Right"]["X"]],
       y: [course_data["Right"]["Y"]],
-      type: 'scatter',
-      mode: 'markers',
+      type: "scatter",
+      mode: "markers",
       marker: {
-        color: 'red',
+        color: "red",
         size: 10,
-      }
-    })
+      },
+    });
   }
 
-  if(course_data == Trapezoid_Small || course_data == Trapezoid_Big){
-
+  if (course_data == Trapezoid_Small || course_data == Trapezoid_Big) {
     plotData.push({
-      x:[course_data["Top"]["X"]],
+      x: [course_data["Top"]["X"]],
       y: [course_data["Top"]["Y"]],
-      type: 'scatter',
-      mode: 'markers',
+      type: "scatter",
+      mode: "markers",
       marker: {
-        color: 'red',
+        color: "red",
         size: 10,
-      }
-    })
+      },
+    });
 
     plotData.push({
-      x:[course_data["Left"]["X"]],
+      x: [course_data["Left"]["X"]],
       y: [course_data["Left"]["Y"]],
-      type: 'scatter',
-      mode: 'markers',
+      type: "scatter",
+      mode: "markers",
       marker: {
-        color: 'red',
+        color: "red",
         size: 10,
-      }
-    })
+      },
+    });
 
     plotData.push({
-      x:[course_data["Right"]["X"]],
+      x: [course_data["Right"]["X"]],
       y: [course_data["Right"]["Y"]],
-      type: 'scatter',
-      mode: 'markers',
+      type: "scatter",
+      mode: "markers",
       marker: {
-        color: 'red',
-        size: 10,
-      }
-    })
-
-    plotData.push({
-      x:[course_data["Bottom"]["X"]],
-      y: [course_data["Bottom"]["Y"]],
-      type: 'scatter',
-      mode: 'markers',
-      marker: {
-        color: 'red',
+        color: "red",
         size: 10,
       },
-     
-    })
+    });
+
+    plotData.push({
+      x: [course_data["Bottom"]["X"]],
+      y: [course_data["Bottom"]["Y"]],
+      type: "scatter",
+      mode: "markers",
+      marker: {
+        color: "red",
+        size: 10,
+      },
+    });
   }
 
-  if(course_data == Triangular_Small || course_data == Triangular_Big){
+  if (course_data == Triangular_Small || course_data == Triangular_Big) {
     plotData.push({
-      x:[course_data["Top"]["X"]],
+      x: [course_data["Top"]["X"]],
       y: [course_data["Top"]["Y"]],
-      type: 'scatter',
-      mode: 'markers',
+      type: "scatter",
+      mode: "markers",
       marker: {
-        color: 'red',
+        color: "red",
         size: 10,
       },
       showlegend: false,
-    })
+    });
 
     plotData.push({
-      x:[course_data["Left"]["X"]],
+      x: [course_data["Left"]["X"]],
       y: [course_data["Left"]["Y"]],
-      type: 'scatter',
-      mode: 'markers',
+      type: "scatter",
+      mode: "markers",
       marker: {
-        color: 'red',
+        color: "red",
         size: 10,
       },
       showlegend: false,
-    })
+    });
 
     plotData.push({
-      x:[course_data["Bottom"]["X"]],
+      x: [course_data["Bottom"]["X"]],
       y: [course_data["Bottom"]["Y"]],
-      type: 'scatter',
-      mode: 'markers',
+      type: "scatter",
+      mode: "markers",
       marker: {
-        color: 'red',
+        color: "red",
         size: 10,
       },
       showlegend: false,
-    })
+    });
 
     plotData.push({
-        x: [course_data["Start_left"]["X"], course_data["Start_right"]["X"]],
-        y: [course_data["Start_left"]["Y"], course_data["Start_right"]["Y"]],
-        type: 'scatter',
-        mode: 'lines',
-        line: {
-          color: 'blue',
-          width: 4, 
-          dash: 'dash',
-        },
-        showlegend: false,
-    })
+      x: [course_data["Start_left"]["X"], course_data["Start_right"]["X"]],
+      y: [course_data["Start_left"]["Y"], course_data["Start_right"]["Y"]],
+      type: "scatter",
+      mode: "lines",
+      line: {
+        color: "blue",
+        width: 4,
+        dash: "dash",
+      },
+      showlegend: false,
+    });
   }
-  if(course_data == UpDown_Small || course_data == UpDown_Big){
+  if (course_data == UpDown_Small || course_data == UpDown_Big) {
     plotData.push({
-      x:[course_data["Top"]["X"]],
+      x: [course_data["Top"]["X"]],
       y: [course_data["Top"]["Y"]],
-      type: 'scatter',
-      mode: 'markers',
+      type: "scatter",
+      mode: "markers",
       marker: {
-        color: 'red',
+        color: "red",
         size: 10,
-      }
-    })
+      },
+    });
 
     plotData.push({
-      x:[course_data["Bottom"]["X"]],
+      x: [course_data["Bottom"]["X"]],
       y: [course_data["Bottom"]["Y"]],
-      type: 'scatter',
-      mode: 'markers',
+      type: "scatter",
+      mode: "markers",
       marker: {
-        color: 'red',
+        color: "red",
         size: 10,
-      }
-    })
+      },
+    });
   }
 
   return (
     <>
-    <p style={{paddingLeft: '10px', fontSize: '20px'}}>Timer: {time}</p>
-    <Plot
-      data={plotData}
-      layout={{
-        xaxis: {
-          showticklabels: false, // Remove tick labels on the X-axis
-        },
-        yaxis: {
-          showticklabels: false, // Remove tick labels on the Y-axis
-        }
-      }}
-    />
-    
-  </>
+      <p>Time (minutes): {time}</p>
+      <Plot
+        data={plotData}
+        layout={{
+          xaxis: {
+            showticklabels: false, // Remove tick labels on the X-axis
+          },
+          yaxis: {
+            showticklabels: false, // Remove tick labels on the Y-axis
+          },
+        }}
+      />
+    </>
   );
 };
 

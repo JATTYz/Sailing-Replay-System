@@ -31,7 +31,6 @@ const BoomAngleGraph = ({
           },
         ]}
         layout={{
-          height: 350,
           title: "Boom Angle",
           xaxis: { title: "Time" },
           yaxis: { title: "Boom Angle" },

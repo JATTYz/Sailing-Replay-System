@@ -31,7 +31,6 @@ const RudderAngleGraph = ({
           },
         ]}
         layout={{
-          height: 350,
           title: "Rudder Angle",
           xaxis: { title: "Time" },
           yaxis: { title: "Rudder Angle" },

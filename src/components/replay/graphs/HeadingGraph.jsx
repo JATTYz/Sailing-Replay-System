@@ -31,7 +31,6 @@ const HeadingGraph = ({
           },
         ]}
         layout={{
-          height: 350,
           title: "Heading",
           xaxis: { title: "Time" },
           yaxis: { title: "Heading" },
