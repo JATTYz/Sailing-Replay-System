@@ -261,7 +261,7 @@ const Map = ({ timeAndXYData, courseData }) => {
 
   return (
     <>
-    <p>TIMER: {time}</p>
+    <p style={{paddingLeft: '10px', fontSize: '20px'}}>Timer: {time}</p>
     <Plot
       data={plotData}
       layout={{
